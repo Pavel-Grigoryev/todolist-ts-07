@@ -2,9 +2,9 @@ import {v1} from "uuid";
 import {FilterValuesType, TodolistType} from "../../App";
 import {
     addTodolistAC,
-    changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC,
-    todoListReducer
-} from "./todolist-reducer";
+    changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC
+} from "../actions";
+import {todoListReducer} from "./todolist-reducer";
 
 let todolistId1: string;
 let todolistId2: string;
