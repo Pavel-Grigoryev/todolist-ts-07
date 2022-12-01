@@ -10,6 +10,7 @@ import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./store/actio
 export type TaskPropsType = {
     task: TaskType
     todolistId: string
+
 }
 
 export const Task = memo((props: TaskPropsType) => {
@@ -19,15 +20,15 @@ export const Task = memo((props: TaskPropsType) => {
     const onChangeTaskStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
          let value = e.currentTarget.checked;
          dispatch(changeTaskStatusAC(props.task.id, value, props.todolistId));
-    },  [props.todolistId, dispatch]);
+    },[props.task.id]);
 
     const onChangeTaskTitleHandler = useCallback((newValue: string) => {
         dispatch(changeTaskTitleAC(props.task.id, newValue, props.todolistId))
-    }, [props.todolistId, dispatch])
+    }, [props.task.id,  props.todolistId] );
 
-    const removeTaskHandler = useCallback(() => {
+    const removeTaskHandler = () => {
                 dispatch(removeTaskAC(props.task.id, props.todolistId));
-    }, [props.todolistId, dispatch])
+    };
 
     return (
         <ListItem className={props.task.isDone ? "is-done" : ""}

@@ -43,11 +43,7 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
                    error={!!error}
                    helperText={error && 'Title is required'}
         />
-        {/*<input value={title}*/}
-        {/*       onChange={onChangeHandler}*/}
-        {/*       onKeyPress={onKeyPressHandler}*/}
-        {/*       className={error ? "error" : ""}*/}
-        {/*/>*/}
+
         <IconButton onClick={addItem}>
             <AddIcon/>
         </IconButton>
