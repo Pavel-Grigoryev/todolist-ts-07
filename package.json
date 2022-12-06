@@ -33,7 +33,6 @@
     "build-storybook": "build-storybook -s public",
     "jest:integration": "jest -c integration/jest.config.js",
     "test:integration": "start-server-and-test storybook http-get://localhost:6006 jest:integration"
-
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -65,6 +64,7 @@
     "@storybook/addon-essentials": "^6.5.13",
     "@storybook/addon-interactions": "^6.5.13",
     "@storybook/addon-links": "^6.5.13",
+    "@storybook/addon-storysource": "^6.5.14",
     "@storybook/builder-webpack5": "^6.5.13",
     "@storybook/manager-webpack5": "^6.5.13",
     "@storybook/node-logger": "^6.5.13",

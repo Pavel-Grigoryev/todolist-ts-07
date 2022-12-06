@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, memo, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import {AddItemForm} from "../AddItemForm";
@@ -7,11 +7,14 @@ import {IconButton, TextField} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
 export default {
-  title: 'TODOLIST/AffItemForm',
+  title: 'TODOLIST/AddItemForm',
   component: AddItemForm,
-  addItem: {
-    description: 'Button clicked inside form',
-  },
+    argTypes: {
+        addItem: {
+            description: 'Button clicked inside form'
+        }
+    }
+
 } as ComponentMeta<typeof AddItemForm>;
 
 const Template: ComponentStory<typeof AddItemForm> = (args) => <AddItemForm {...args} />;
@@ -21,7 +24,7 @@ AddItemFormBaseExample.args = {
  addItem: action('Button clicked')
 };
 
-export const TemplateError: ComponentStory<typeof AddItemForm> = (args) => {
+export const TemplateError: ComponentStory<typeof AddItemForm> = ()=> {
 
     let [title, setTitle] = useState("")
     let [error, setError] = useState<string | null>("Title is required")
