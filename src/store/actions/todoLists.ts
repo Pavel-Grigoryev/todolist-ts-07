@@ -1,5 +1,6 @@
+import {FilterValuesType} from "../reducers/todolist-reducer";
 import {v1} from "uuid";
-import {FilterValuesType} from "../../App";
+
 
 export const removeTodolistAC = (todolistId: string) => ({type: 'REMOVE-TODOLIST', todolistId}) as const;
 export const addTodolistAC = (title: string) => ({type: 'ADD-TODOLIST', title: title, todolistId:v1()}) as const;

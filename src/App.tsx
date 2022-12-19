@@ -1,6 +1,5 @@
 import React, {useCallback} from 'react';
 import './App.css';
-import {TaskType} from './Todolist';
 import {AddItemForm} from './AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@mui/material';
 import {Menu} from "@mui/icons-material";
@@ -8,19 +7,11 @@ import {useDispatch, useSelector} from "react-redux"
 import {Todolist} from "./Todolist";
 import {addTodolistAC} from "./store/actions";
 import {selectTodolists} from "./store/selectors";
-
-export type FilterValuesType = "all" | "active" | "completed";
-
-export type TodolistType = {
-    id: string
-    title: string
-    filter: FilterValuesType
-}
+import {TaskType} from "./api/todolist-api";
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
-
 
 export function App() {
 
@@ -71,7 +62,6 @@ export function App() {
                 </Grid>
 
             </Container>
-
 
         </div>
     );

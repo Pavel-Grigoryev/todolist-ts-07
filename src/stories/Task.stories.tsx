@@ -2,13 +2,21 @@ import React from 'react';
 import {ComponentStory, ComponentMeta} from '@storybook/react';
 import {Task} from "../Task";
 import {ReduxStoreProviderDecorator} from "../store/ReduxStoreProviderDecorator";
+import {TaskPriorities, TasksStatuses} from "../api/todolist-api";
 
 export default {
     title: 'TODOLIST/Task',
     component: Task,
     args: {
         todolistId: 'cfdfdfdfd',
-        task: {id: 'dsfg', title: 'JS', isDone: true},
+        task: {id: 'dsfg', title: 'JS', status: TasksStatuses.Completed,
+            priority: TaskPriorities.Low,
+            startDate: '',
+            deadline: '',
+            todoListId: 'todolistId1',
+            order: 0,
+            addedDate: '',
+            description: ''},
     },
     decorators: [ReduxStoreProviderDecorator]
 
@@ -22,5 +30,12 @@ export const TaskIsDoneStory = Template.bind({});
 export const TaskIsNotDoneStory = Template.bind({});
 
 TaskIsNotDoneStory.args = {
-    task: {id: 'dsfg', title: 'JS', isDone: false},
+    task: {id: 'dsfg', title: 'JS', status: TasksStatuses.New,
+        priority: TaskPriorities.Low,
+        startDate: '',
+        deadline: '',
+        todoListId: 'todolistId1',
+        order: 0,
+        addedDate: '',
+        description: ''},
 }

@@ -1,3 +1,4 @@
+import {TasksStatuses} from "../../api/todolist-api";
 
 export const removeTaskAC = (taskId: string, todoListId: string) => ({
     type: 'REMOVE-TASK',
@@ -5,11 +6,11 @@ export const removeTaskAC = (taskId: string, todoListId: string) => ({
     todoListId
 }) as const;
 
-export const addTaskAC = (title: string, todoListId: string) => ({type: 'ADD-TASK', todoListId, title}) as const;
+export const addTaskAC = (todoListId: string, title: string) => ({type: 'ADD-TASK', todoListId, title}) as const;
 
-export const changeTaskStatusAC = (taskId: string, isDone: boolean, todoListId: string) => ({
+export const changeTaskStatusAC = (taskId: string, status: TasksStatuses, todoListId: string) => ({
     type: 'CHANGE-TASK-STATUS',
-    isDone,
+    status,
     todoListId,
     taskId
 }) as const;
