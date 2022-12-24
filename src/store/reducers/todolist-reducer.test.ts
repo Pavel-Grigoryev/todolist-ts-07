@@ -1,9 +1,11 @@
 import {v1} from "uuid";
 import {
-    addTodolistAC,
-    changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC
-} from "../actions";
-import {FilterValuesType, TodoListDomainType, todoListReducer} from "./todolist-reducer";
+    addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC,
+    FilterValuesType,
+    deleteTodolistAC, setTodolistAC,
+    TodoListDomainType,
+    todoListReducer
+} from "./todolist-reducer";
 
 let todolistId1: string;
 let todolistId2: string;
@@ -26,21 +28,20 @@ test('correct todolist should be removed', () => {
 
     //
     //const endState = todoListReducer(startState, {type: 'REMOVE-TODOLIST', todolistId: todolistId1})
-    const endState = todoListReducer(startState, removeTodolistAC(todolistId1))
+    const endState = todoListReducer(startState, deleteTodolistAC(todolistId1))
     //
     expect(endState.length).toBe(1);
     expect(endState[0].id).toBe(todolistId2);
 });
 
-test('correct todolist should be added', () => {    //
+test('correct todolist should be added', () => {
 
+    let newTodolist = {id: 'todolistId3', title: "New", addedDate: "", order: 0}
 
-    let newTodolistTitle = "New Todolist";
-
-    const endState = todoListReducer(startState, addTodolistAC(newTodolistTitle))
+    const endState = todoListReducer(startState, addTodolistAC(newTodolist))
     //
     expect(endState.length).toBe(3);
-    expect(endState[0].title).toBe(newTodolistTitle);
+    expect(endState[0].title).toBe('New');
 });
 
 
@@ -61,11 +62,16 @@ test('correct todolist should change its name', () => {
 
     let newTodolistTitle = "New Todolist";
 
-
-    //const endState = todoListReducer(startState, {type: "CHANGE-TODOLIST-TITLE", title: newTodolistTitle, todolistId: todolistId2} );
     const endState = todoListReducer(startState, changeTodolistTitleAC(newTodolistTitle, todolistId2));
 
     expect(endState[0].title).toBe("What to learn");
     expect(endState[1].title).toBe(newTodolistTitle);
 });
 
+test('todolists should be set', () => {
+
+    const endState = todoListReducer([], setTodolistAC(startState));
+
+    expect(endState.length).toBe(2);
+    expect(endState[1].title).toBe('What to buy');
+});

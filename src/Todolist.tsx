@@ -1,19 +1,22 @@
-import React, {memo, useCallback} from 'react';
-import {AddItemForm} from './AddItemForm';
-import {EditableSpan} from './EditableSpan';
-import {Button,IconButton, List, Typography} from "@mui/material";
+import React, {memo, useCallback, useEffect} from 'react';
+import {AddItemForm} from './components/AddItemForm';
+import {EditableSpan} from './components/EditableSpan';
+import {Button, IconButton, List, Typography} from "@mui/material";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import {useDispatch, useSelector} from "react-redux";
-import {
-    addTaskAC,
-    changeTodolistFilterAC,
-    changeTodolistTitleAC,
-    removeTodolistAC
-} from './store/actions';
+import {useSelector} from "react-redux";
+
 import {selectTasks} from "./store/selectors";
 import {Task} from "./Task";
-import {FilterValuesType, TodoListDomainType} from "./store/reducers/todolist-reducer";
+import {
+    changeTodolistFilterAC,
+    deleteTodolistTC,
+    FilterValuesType,
+    TodoListDomainType,
+    updateTodolistTC
+} from "./store/reducers/todolist-reducer";
 import {TasksStatuses} from "./api/todolist-api";
+import {addTaskAC, addTaskTC, setTasksTC} from "./store/reducers/tasks-reducer";
+import {appDispatch} from "./store/store";
 
 
 type PropsType = {
@@ -24,21 +27,25 @@ export const Todolist = memo((props: PropsType) => {
 
     const {id, filter, title} = props.todolist;
 
-    const dispatch = useDispatch();
+    const dispatch = appDispatch();
+
+    useEffect(() => {
+        dispatch(setTasksTC(id))
+    }, [])
 
     const objTasks = useSelector(selectTasks);
     let tasks = objTasks[id];
 
     const addTask = useCallback((title: string) => {
-        dispatch(addTaskAC(id, title));
+        dispatch(addTaskTC(id, title));
     }, [id])
 
     const removeTodolist = useCallback(() => {
-        dispatch(removeTodolistAC(id));
+        dispatch(deleteTodolistTC(id));
     }, [id])
 
     const changeTodolistTitle = useCallback((title: string) => {
-        dispatch(changeTodolistTitleAC(title, id));
+        dispatch(updateTodolistTC(id, title));
     }, [id]);
 
     const onAllClickHandler = useCallback(() => dispatch(changeTodolistFilterAC("all", id)), [id, dispatch]);

@@ -1,4 +1,4 @@
-import {AppRootStateType} from "../index";
+import {AppRootStateType} from "../store";
 import {TodoListDomainType} from "../reducers/todolist-reducer";
 
 

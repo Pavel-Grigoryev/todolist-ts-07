@@ -1,4 +1,4 @@
-import {AppRootStateType} from "./index";
+import {AppRootStateType} from "./store";
 import {combineReducers, legacy_createStore} from "redux";
 import {ReactNode} from "react";
 import {tasksReducer, todoListReducer} from "./reducers";

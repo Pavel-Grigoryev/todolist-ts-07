@@ -29,7 +29,7 @@ export const CreateTodolist = () => {
     const [state, setState] = useState<any>(null)
 
     const onSubmitHadler = (formData: FormDataType) => {
-        todolistAPI.addTodoList(formData.todoListTitle)
+        todolistAPI.addTodolist(formData.todoListTitle)
             .then((res) => {
                 setState(res.data);
             })

@@ -1,5 +1,5 @@
-import {AppRootStateType} from "../index";
-import {TasksStateType} from "../../App";
+import {AppRootStateType} from "../store";
+import {TasksStateType} from "../../app/App";
 
 
 
