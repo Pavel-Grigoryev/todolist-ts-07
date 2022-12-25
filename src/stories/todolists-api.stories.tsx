@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {todolistAPI} from "../api/todolist-api";
-import {ReduxStoreProviderDecorator} from "../store/ReduxStoreProviderDecorator";
+import {ReduxStoreProviderDecorator} from "../app/ReduxStoreProviderDecorator";
 
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
 

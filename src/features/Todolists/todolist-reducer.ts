@@ -1,6 +1,5 @@
 import {todolistAPI, TodoListType} from "../../api/todolist-api";
-import {v1} from "uuid";
-import {AppThunk} from "../store";
+import {AppThunk} from "../../app/store";
 
 let initialState: Array<TodoListDomainType> = []
 

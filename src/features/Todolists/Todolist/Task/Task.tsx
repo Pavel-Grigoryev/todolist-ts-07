@@ -1,10 +1,10 @@
 import React, {ChangeEvent, memo, useCallback} from 'react';
 import {Checkbox, IconButton, ListItem} from "@mui/material";
-import {EditableSpan} from "./components/EditableSpan";
+import {EditableSpan} from "../../../../components/EditableSpan";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import {deleteTaskTC, updateTaskTC} from "./store/reducers/tasks-reducer";
-import {TasksStatuses, TaskType} from "./api/todolist-api";
-import {appDispatch} from "./store/store";
+import {deleteTaskTC, updateTaskTC} from "../../tasks-reducer";
+import {TasksStatuses, TaskType} from "../../../../api/todolist-api";
+import {AppDispatch} from "../../../../app/store";
 
 export type TaskPropsType = {
     task: TaskType
@@ -14,7 +14,7 @@ export type TaskPropsType = {
 
 export const Task = memo((props: TaskPropsType) => {
 
-    const dispatch = appDispatch();
+    const dispatch = AppDispatch();
 
     const onChangeTaskStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
          let status = e.currentTarget.checked ? props.task.status = TasksStatuses.Completed : TasksStatuses.New;

@@ -1,22 +1,19 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import {AddItemForm} from './components/AddItemForm';
-import {EditableSpan} from './components/EditableSpan';
+import {AddItemForm} from '../../../components/AddItemForm';
+import {EditableSpan} from '../../../components/EditableSpan';
 import {Button, IconButton, List, Typography} from "@mui/material";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import {useSelector} from "react-redux";
-
-import {selectTasks} from "./store/selectors";
-import {Task} from "./Task";
+import {Task} from "./Task/Task";
 import {
     changeTodolistFilterAC,
     deleteTodolistTC,
     FilterValuesType,
     TodoListDomainType,
     updateTodolistTC
-} from "./store/reducers/todolist-reducer";
-import {TasksStatuses} from "./api/todolist-api";
-import {addTaskAC, addTaskTC, setTasksTC} from "./store/reducers/tasks-reducer";
-import {appDispatch} from "./store/store";
+} from "../todolist-reducer";
+import {TasksStatuses} from "../../../api/todolist-api";
+import {addTaskTC, setTasksTC, TasksStateType} from "../tasks-reducer";
+import {AppDispatch, useAppSelector} from "../../../app/store";
 
 
 type PropsType = {
@@ -27,14 +24,14 @@ export const Todolist = memo((props: PropsType) => {
 
     const {id, filter, title} = props.todolist;
 
-    const dispatch = appDispatch();
+    const dispatch = AppDispatch();
+
+    const objTasks = useAppSelector<TasksStateType>(state => state.tasks);
+    let tasks = objTasks[id];
 
     useEffect(() => {
         dispatch(setTasksTC(id))
     }, [])
-
-    const objTasks = useSelector(selectTasks);
-    let tasks = objTasks[id];
 
     const addTask = useCallback((title: string) => {
         dispatch(addTaskTC(id, title));

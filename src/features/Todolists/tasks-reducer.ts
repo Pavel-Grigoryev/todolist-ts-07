@@ -1,6 +1,6 @@
 import {AddTodolistAT, DeleteTodolistAT, SetTodolistAT} from "./todolist-reducer";
 import {TaskPayloadType, TaskType, todolistAPI} from "../../api/todolist-api";
-import {AppThunk} from "../store";
+import {AppThunk} from "../../app/store";
 
 export let initialState: TasksStateType = {};
 
