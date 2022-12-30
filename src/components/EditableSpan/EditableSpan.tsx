@@ -1,5 +1,5 @@
 import React, {ChangeEvent, memo, useState} from 'react';
-import {TextField} from "@mui/material";
+import TextField from "@mui/material/TextField";
 
 type EditableSpanPropsType = {
     value: string

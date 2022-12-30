@@ -21,7 +21,8 @@ beforeEach(() => {
                 todoListId: 'todolistId1',
                 order: 0,
                 addedDate: '',
-                description: ''
+                description: '',
+                entityStatus: "idle"
             },
             {
                 id: '2', title: 'JS', status: TasksStatuses.Completed,
@@ -31,7 +32,8 @@ beforeEach(() => {
                 todoListId: 'todolistId1',
                 order: 0,
                 addedDate: '',
-                description: ''
+                description: '',
+                entityStatus: "idle"
             },
             {
                 id: '3', title: 'React', status: TasksStatuses.Completed,
@@ -41,7 +43,8 @@ beforeEach(() => {
                 todoListId: 'todolistId1',
                 order: 0,
                 addedDate: '',
-                description: ''
+                description: '',
+                entityStatus: "idle"
             }
         ],
         'todolistId2': [
@@ -53,7 +56,8 @@ beforeEach(() => {
                 todoListId: 'todolistId2',
                 order: 0,
                 addedDate: '',
-                description: ''
+                description: '',
+                entityStatus: "idle"
             },
             {
                 id: '2', title: 'milk', status: TasksStatuses.Completed,
@@ -63,7 +67,8 @@ beforeEach(() => {
                 todoListId: 'todolistId2',
                 order: 0,
                 addedDate: '',
-                description: ''
+                description: '',
+                entityStatus: "idle"
             },
             {
                 id: '3', title: 'tea', status: TasksStatuses.New,
@@ -73,7 +78,8 @@ beforeEach(() => {
                 todoListId: 'todolistId2',
                 order: 0,
                 addedDate: '',
-                description: ''
+                description: '',
+                entityStatus: "idle"
             }
         ]
     }
@@ -100,7 +106,8 @@ test('correct task should be deleted from correct array', () => {
                 todoListId: 'todolistId1',
                 order: 0,
                 addedDate: '',
-                description: ''
+                description: '',
+                entityStatus: "idle"
             },
             {
                 id: '2', title: 'JS', status: TasksStatuses.Completed,
@@ -110,7 +117,8 @@ test('correct task should be deleted from correct array', () => {
                 todoListId: 'todolistId1',
                 order: 0,
                 addedDate: '',
-                description: ''
+                description: '',
+                entityStatus: "idle"
             },
             {
                 id: '3', title: 'React', status: TasksStatuses.Completed,
@@ -120,7 +128,8 @@ test('correct task should be deleted from correct array', () => {
                 todoListId: 'todolistId1',
                 order: 0,
                 addedDate: '',
-                description: ''
+                description: '',
+                entityStatus: "idle"
             }
         ],
         'todolistId2': [
@@ -132,7 +141,8 @@ test('correct task should be deleted from correct array', () => {
                 todoListId: 'todolistId2',
                 order: 0,
                 addedDate: '',
-                description: ''
+                description: '',
+                entityStatus: "idle"
             },
             {
                 id: '3', title: 'tea', status: TasksStatuses.New,
@@ -142,7 +152,8 @@ test('correct task should be deleted from correct array', () => {
                 todoListId: 'todolistId2',
                 order: 0,
                 addedDate: '',
-                description: ''
+                description: '',
+                entityStatus: "idle"
             }
         ]
     })
@@ -160,7 +171,8 @@ test('correct task should be added to correct array', () => {
         todoListId: 'todolistId2',
         order: 0,
         addedDate: '',
-        description: ''
+        description: '',
+        entityStatus: "idle"
     }
 
     const action = addTaskAC(newTask)
@@ -172,6 +184,16 @@ test('correct task should be added to correct array', () => {
     expect(endState['todolistId2'][0].id).toBeDefined()
     expect(endState['todolistId2'][0].title).toBe('beer')
     expect(endState['todolistId2'][0].status).toBe(TasksStatuses.New)
+})
+
+test('entityStatus of specified task should be changed', () => {
+
+    const action = updateTaskAC('todolistId2', '2', {entityStatus: "loading"})
+
+    const endState = tasksReducer(startState, action)
+
+    expect(endState['todolistId1'][1].entityStatus).toBe("idle");
+    expect(endState['todolistId2'][1].entityStatus).toBe("loading");
 })
 
 test('status of specified task should be changed', () => {
@@ -235,12 +257,7 @@ test('property [todolistId]: [] should be added in the taskState', () => {
     expect(endState['1']).toStrictEqual([])
 })
 
-test('tasks should be added in correct todolist', () => {
-
-    const startTaskEmptyState = {
-        ['todolistId1']: [],
-        ['todolistId2']: []
-    }
+test('tasks should be added in correct todolist', () => {    
 
     const tasks = [
         {
@@ -251,7 +268,8 @@ test('tasks should be added in correct todolist', () => {
             todoListId: 'todolistId2',
             order: 0,
             addedDate: '',
-            description: ''
+            description: '',
+            entityStatus: "idle"
         },
         {
             id: '2', title: 'JS', status: TasksStatuses.New,
@@ -261,7 +279,8 @@ test('tasks should be added in correct todolist', () => {
             todoListId: 'todolistId2',
             order: 0,
             addedDate: '',
-            description: ''
+            description: '',
+            entityStatus: "idle"
         },
     ]
 

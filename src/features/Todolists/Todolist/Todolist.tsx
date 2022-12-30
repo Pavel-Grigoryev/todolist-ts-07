@@ -1,7 +1,10 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import {AddItemForm} from '../../../components/AddItemForm';
-import {EditableSpan} from '../../../components/EditableSpan';
-import {Button, IconButton, List, Typography} from "@mui/material";
+import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
+import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
+import List from "@mui/material/List";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import {Task} from "./Task/Task";
 import {
@@ -16,13 +19,11 @@ import {addTaskTC, setTasksTC, TasksStateType} from "../tasks-reducer";
 import {AppDispatch, useAppSelector} from "../../../app/store";
 
 
-type PropsType = {
-    todolist: TodoListDomainType
-}
 
-export const Todolist = memo((props: PropsType) => {
 
-    const {id, filter, title} = props.todolist;
+export const Todolist = memo(({demo = false, todolist}: PropsType) => {
+
+    const {id, filter, title, entityStatus} = todolist;
 
     const dispatch = AppDispatch();
 
@@ -30,7 +31,11 @@ export const Todolist = memo((props: PropsType) => {
     let tasks = objTasks[id];
 
     useEffect(() => {
-        dispatch(setTasksTC(id))
+        if(demo) {
+            return
+        } else {
+            dispatch(setTasksTC(id))
+        }
     }, [])
 
     const addTask = useCallback((title: string) => {
@@ -62,11 +67,11 @@ export const Todolist = memo((props: PropsType) => {
     return <div style={{textAlign: 'center'}}>
         <Typography variant={"h5"} style={{marginBottom: "10px"}}><EditableSpan value={title}
                                                                                 onChange={changeTodolistTitle}/>
-            <IconButton onClick={removeTodolist}>
+            <IconButton onClick={removeTodolist} disabled={entityStatus === "loading"}>
                 <DeleteOutlineOutlinedIcon/>
             </IconButton>
         </Typography>
-        <AddItemForm addItem={addTask}/>
+        <AddItemForm addItem={addTask} entityStatus={entityStatus}/>
         <List>
             {
                 filterTasks(filter).map(t => {
@@ -116,6 +121,9 @@ const ButtonWithMemo = memo((props: ButtonWithMemoPropsType) => {
 
 })
 
+//Types
 
-
-
+type PropsType = {
+    todolist: TodoListDomainType
+    demo?: boolean
+}

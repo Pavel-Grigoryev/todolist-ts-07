@@ -1,7 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import {AddItemForm} from "../components/AddItemForm";
+import {AddItemForm} from "../components/AddItemForm/AddItemForm";
 import {action} from "@storybook/addon-actions";
 import {IconButton, TextField} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
@@ -22,6 +22,12 @@ const Template: ComponentStory<typeof AddItemForm> = (args) => <AddItemForm {...
 export const AddItemFormBaseExample = Template.bind({});
 AddItemFormBaseExample.args = {
  addItem: action('Button clicked')
+};
+
+export const AddItemFormDisabledExample = Template.bind({});
+AddItemFormDisabledExample.args = {
+    addItem: action('Button clicked'),
+    entityStatus: "loading"
 };
 
 export const TemplateError: ComponentStory<typeof AddItemForm> = ()=> {

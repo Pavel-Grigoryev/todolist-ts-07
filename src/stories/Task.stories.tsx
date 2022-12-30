@@ -16,7 +16,9 @@ export default {
             todoListId: 'todolistId1',
             order: 0,
             addedDate: '',
-            description: ''},
+            description: '',
+            entityStatus: "idle"
+        },
     },
     decorators: [ReduxStoreProviderDecorator]
 
@@ -37,5 +39,22 @@ TaskIsNotDoneStory.args = {
         todoListId: 'todolistId1',
         order: 0,
         addedDate: '',
-        description: ''},
+        description: '',
+        entityStatus: "idle"
+    },
+}
+
+export const TaskDisabledStory = Template.bind({});
+
+TaskDisabledStory.args = {
+    task: {id: 'dsdfg', title: 'React', status: TasksStatuses.Completed,
+        priority: TaskPriorities.Low,
+        startDate: '',
+        deadline: '',
+        todoListId: 'todolistId1',
+        order: 0,
+        addedDate: '',
+        description: '',
+        entityStatus: "loading"
+    },
 }

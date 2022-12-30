@@ -1,16 +1,12 @@
 import React, {ChangeEvent, memo, useCallback} from 'react';
-import {Checkbox, IconButton, ListItem} from "@mui/material";
-import {EditableSpan} from "../../../../components/EditableSpan";
+import  ListItem from "@mui/material/ListItem";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
+import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import {deleteTaskTC, updateTaskTC} from "../../tasks-reducer";
-import {TasksStatuses, TaskType} from "../../../../api/todolist-api";
+import {deleteTaskTC, TaskDomainType, updateTaskTC} from "../../tasks-reducer";
+import {TasksStatuses} from "../../../../api/todolist-api";
 import {AppDispatch} from "../../../../app/store";
-
-export type TaskPropsType = {
-    task: TaskType
-    todolistId: string
-
-}
 
 export const Task = memo((props: TaskPropsType) => {
 
@@ -41,17 +37,25 @@ export const Task = memo((props: TaskPropsType) => {
                 checked={props.task.status === TasksStatuses.Completed}
                 size={"small"}
                 color="secondary"
+                disabled={props.task.entityStatus === "loading"}
             />
             <EditableSpan value={props.task.title}
                           onChange={onChangeTaskTitleHandler}
             />
-            <IconButton onClick={removeTaskHandler} size="small">
+            <IconButton onClick={removeTaskHandler} size="small" disabled={props.task.entityStatus === "loading"}>
                 <DeleteOutlineOutlinedIcon style={{width: '20px'}}/>
             </IconButton>
         </ListItem>
     );
 });
 
+//Types
+
+export type TaskPropsType = {
+    task: TaskDomainType
+    todolistId: string
+
+}
 
 
 

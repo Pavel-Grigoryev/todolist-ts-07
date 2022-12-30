@@ -1,10 +1,8 @@
 import React, {ChangeEvent, KeyboardEvent, memo, useState} from 'react';
-import {IconButton, TextField} from "@mui/material";
+import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
 import AddIcon from '@mui/icons-material/Add';
-
-type AddItemFormPropsType = {
-    addItem: (title: string) => void
-}
+import {RequestStatusType} from "../../app/app-reducer";
 
 export const AddItemForm = memo((props: AddItemFormPropsType) => {
     let [title, setTitle] = useState("")
@@ -42,11 +40,20 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
                    onKeyPress={onKeyPressHandler}
                    error={!!error}
                    helperText={error && 'Title is required'}
+                   disabled={props.entityStatus === "loading"}
         />
 
-        <IconButton onClick={addItem}>
+        <IconButton onClick={addItem} disabled={props.entityStatus === "loading"}>
             <AddIcon/>
         </IconButton>
         {/*{error && <div className="error-message">{error}</div>}*/}
     </div>
 })
+
+
+//Types
+
+type AddItemFormPropsType = {
+    addItem: (title: string) => void
+    entityStatus?: RequestStatusType
+}

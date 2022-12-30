@@ -11,9 +11,11 @@ export default {
   decorators: [ReduxStoreProviderDecorator]
 } as ComponentMeta<typeof App>;
 
-const Template: ComponentStory<typeof App> = (args) => <App/>;
+const Template: ComponentStory<typeof App> = (args) => <App {...args}/>;
 
 export const AppStory = Template.bind({});
 
-
+AppStory.args = {
+  demo: true
+}
 
