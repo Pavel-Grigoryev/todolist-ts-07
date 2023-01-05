@@ -35,7 +35,32 @@ export const todolistAPI = {
     }
 }
 
+export const authAPI = {
+    login(data: AuthDataType) {
+        return instance.post<CommonResponseType<{userId:number}>>('/auth/login', data);
+    },
+    logout() {
+        return instance.delete<CommonResponseType>('/auth/login');
+    },
+    me() {
+        return instance.get<CommonResponseType<MeResponseType>>('/auth/me');
+    }
+}
+
 //Types
+
+export type AuthDataType = {
+    email: string,
+    password: string,
+    rememberMe: boolean,
+    captcha?: string
+}
+
+type MeResponseType = {
+    id: number
+    email: string
+    login: string
+}
 
 export enum TasksStatuses {
     New = 0,

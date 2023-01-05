@@ -1,19 +1,22 @@
-import {AppDispatch, useAppSelector} from "../../app/store";
+import {useAppDispatch, useAppSelector} from "../../app/store";
 import React, {useCallback, useEffect} from "react";
 import {addTodolistTC, getTodolistsTC, TodoListDomainType} from "./todolist-reducer";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import {Todolist} from "./Todolist/Todolist";
+import {Navigate} from "react-router-dom";
 
 export const Todolists = ({demo = false}: TodolistsPropsType) => {
 
-    const dispatch = AppDispatch();
+    const dispatch = useAppDispatch();
 
     const todolists = useAppSelector<Array<TodoListDomainType>>(state => state.todolists);
 
+    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn);
+
     useEffect(() => {
-        if (demo) {
+        if (demo || !isLoggedIn) {
             return
         } else {
             dispatch(getTodolistsTC());
@@ -23,6 +26,10 @@ export const Todolists = ({demo = false}: TodolistsPropsType) => {
     const addTodolist = useCallback((title: string) => {
         dispatch(addTodolistTC(title));
     }, [dispatch])
+
+    if (!isLoggedIn) {
+        return <Navigate to={"/login"}/>
+    }
 
     return (
         <>
@@ -40,7 +47,6 @@ export const Todolists = ({demo = false}: TodolistsPropsType) => {
                                 >
                                     <Todolist
                                         todolist={tl}
-                                        demo={demo}
                                     />
                                 </Paper>
                             </Grid>

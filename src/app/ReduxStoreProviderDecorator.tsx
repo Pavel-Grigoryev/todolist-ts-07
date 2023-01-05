@@ -4,18 +4,18 @@ import {ReactNode} from "react";
 import {Provider} from "react-redux";
 import React from "react";
 import {v1} from "uuid";
-import {reducer as formReducer} from 'redux-form';
 import {TaskPriorities, TasksStatuses} from "../api/todolist-api";
 import {tasksReducer} from "../features/Todolists/tasks-reducer";
 import {todoListReducer} from "../features/Todolists/todolist-reducer";
 import {appReducer} from "./app-reducer";
 import thunkMiddleware from "redux-thunk";
+import {authReducer} from "../features/Login/auth-reducer";
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
     todolists: todoListReducer,
-    form: formReducer,
-    app: appReducer
+    app: appReducer,
+    auth: authReducer
 })
 
 const initialGlobalState = {
@@ -75,7 +75,11 @@ const initialGlobalState = {
     },
     app: {
         status: 'idle',
-        error: null
+        error: null,
+        isInitialized: false
+    },
+    auth: {
+        isLoggedIn: false
     }
 };
 

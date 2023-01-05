@@ -1,4 +1,4 @@
-import {AddTodolistAT, DeleteTodolistAT, RESULT_CODE, SetTodolistAT} from "./todolist-reducer";
+import {AddTodolistAT, ClearTodosDataAT, DeleteTodolistAT, RESULT_CODE, SetTodolistAT} from "./todolist-reducer";
 import {TaskPayloadType, TaskType, todolistAPI} from "../../api/todolist-api";
 import {AppThunk} from "../../app/store";
 import {RequestStatusType, setAppStatusAC} from "../../app/app-reducer";
@@ -44,7 +44,9 @@ export const tasksReducer = (state = initialState, action: TasksActionsType): Ta
             return copyState;
         }
         case "SET-TASKS":
-            return {...state, [action.todolistId]: action.tasks.map(t => ({...t, entityStatus: "idle"}))}
+            return {...state, [action.todolistId]: action.tasks.map(t => ({...t, entityStatus: "idle"}))};
+        case "CLEAR-DATA":
+            return {};
         default:
             return state
     }
@@ -175,15 +177,7 @@ type updateTaskAT = ReturnType<typeof updateTaskAC>
 type setTasksAT = ReturnType<typeof setTasksAC>
 
 
-export type TasksActionsType =
-    RemoveTaskAT
-    | AddTaskAT
-    | updateTaskAT
-    | AddTodolistAT
-    | DeleteTodolistAT
-    | SetTodolistAT
-    | setTasksAT
-
+export type TasksActionsType = RemoveTaskAT | AddTaskAT | updateTaskAT | AddTodolistAT | DeleteTodolistAT | SetTodolistAT | setTasksAT | ClearTodosDataAT;
 
 export type TaskPayloadUpdateType = {
     title?: string

@@ -5,7 +5,7 @@ import {
 } from "./tasks-reducer";
 import {tasksReducer} from "./tasks-reducer";
 import {TaskPriorities, TasksStatuses, TodoListType} from "../../api/todolist-api";
-import {addTodolistAC, deleteTodolistAC, setTodolistAC} from "./todolist-reducer";
+import {addTodolistAC, clearTodosDataAC, deleteTodolistAC, setTodolistAC} from "./todolist-reducer";
 
 let startState: TasksStateType;
 let startTodolists: Array<TodoListType>;
@@ -257,7 +257,7 @@ test('property [todolistId]: [] should be added in the taskState', () => {
     expect(endState['1']).toStrictEqual([])
 })
 
-test('tasks should be added in correct todolist', () => {    
+test('tasks should be added in correct todolist', () => {
 
     const tasks = [
         {
@@ -289,4 +289,11 @@ test('tasks should be added in correct todolist', () => {
 
     expect(endState['todolistId2'][0].title).toBe('CSS')
     expect(endState['todolistId2'].length).toBe(2)
+})
+
+test('the state must be set to empty {}', () => {
+
+    const endState = tasksReducer({}, clearTodosDataAC());
+
+    expect(endState).toStrictEqual({})
 })

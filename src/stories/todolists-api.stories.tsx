@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {todolistAPI} from "../api/todolist-api";
 import {ReduxStoreProviderDecorator} from "../app/ReduxStoreProviderDecorator";
-
-import {Field, InjectedFormProps, reduxForm} from "redux-form";
+import {useFormik} from "formik";
 
 
 export default {
@@ -18,9 +17,9 @@ export const GetTodolists = () => {
                 setState(res.data);
             })
 
-    }, [])
-    return <div>{JSON.stringify(state)}
+    }, []);
 
+    return <div>{JSON.stringify(state)}
     </div>
 }
 
@@ -28,196 +27,198 @@ export const GetTodolists = () => {
 export const CreateTodolist = () => {
     const [state, setState] = useState<any>(null)
 
-    const onSubmitHadler = (formData: FormDataType) => {
-        todolistAPI.addTodolist(formData.todoListTitle)
-            .then((res) => {
-                setState(res.data);
-            })
-    }
+    const formik = useFormik({
+        initialValues: {
+            title: '',
+        },
+        onSubmit: values => {
+            todolistAPI.addTodolist(values.title)
+                .then((res) => {
+                    setState(res.data);
+                })
+        },
+    })
 
     return <div>{JSON.stringify(state)}
-        <TitleReduxForm onSubmit={onSubmitHadler}/>
+        <form onSubmit={formik.handleSubmit}>
+            <input placeholder={'Title'}
+                   {...formik.getFieldProps('title')}
+            />
+            <button type={'submit'}>Create Todolist</button>
+        </form>
     </div>
 }
 
 export const DeleteTodolist = () => {
-    const [state, setState] = useState<any>(null)
-    const onSubmitHadler = (formData: FormDataType) => {
-        console.log(formData)
-        todolistAPI.deleteTodolist(formData.todoListId)
-            .then((res) => {
-                setState(res.data);
-            })
-    }
+    const [state, setState] = useState<any>(null);
+
+    const formik = useFormik({
+        initialValues: {
+            todoListId: '',
+        },
+        onSubmit: values => {
+            todolistAPI.deleteTodolist(values.todoListId)
+                .then((res) => {
+                    setState(res.data);
+                })
+        },
+    });
 
     return <div>{JSON.stringify(state)}
-        <TodoListIdReduxForm onSubmit={onSubmitHadler} title={'Delete todolist'}/>
+        <form onSubmit={formik.handleSubmit}>
+            <input placeholder={'Todolist Id'}
+                   {...formik.getFieldProps('todoListId')}
+            />
+            <button type={'submit'}>Delete Todolist</button>
+        </form>
     </div>
-}
+};
+
 export const UpdateTodolistTitle = () => {
-    const [state, setState] = useState<any>(null)
-    const onSubmitHadler = (formData: FormDataType) => {
-        console.log(formData)
-        todolistAPI.updateTodolist(formData.todoListId, formData.todoListTitle)
-            .then((res) => {
-                setState(res.data);
-            })
-    }
+    const [state, setState] = useState<any>(null);
+
+    const formik = useFormik({
+        initialValues: {
+            todoListId: '',
+            todoListTitle: ''
+        },
+        onSubmit: values => {
+            todolistAPI.updateTodolist(values.todoListId, values.todoListTitle)
+                .then((res) => {
+                    setState(res.data);
+                })
+        },
+    });
 
     return <div>{JSON.stringify(state)}
-        <TodoListIdTitleReduxForm onSubmit={onSubmitHadler}/>
+        <form onSubmit={formik.handleSubmit}>
+            <input placeholder={'Todolist id'}
+                   {...formik.getFieldProps('todoListId')}/>
+            <input placeholder={'Title'}
+                   {...formik.getFieldProps('todoListTitle')}/>
+            <button type={'submit'}>Change Todolist</button>
+        </form>
     </div>
 }
 
 export const GetTasks = () => {
     const [state, setState] = useState<any>(null)
-    const onSubmitHadler = (formData: FormDataType) => {
-        todolistAPI.getTasks(formData.todoListId)
-            .then((res) => {
-                setState(res.data);
-            })
-    }
+
+    const formik = useFormik({
+        initialValues: {
+            todoListId: ''
+        },
+        onSubmit: values => {
+            todolistAPI.getTasks(values.todoListId)
+                .then((res) => {
+                    setState(res.data);
+                })
+        },
+    });
+
     return <div>{JSON.stringify(state)}
-        <TodoListIdReduxForm onSubmit={onSubmitHadler} title={'Get tasks'} />
+        <form onSubmit={formik.handleSubmit}>
+            <input placeholder={'Todolist Id'}
+                   {...formik.getFieldProps('todoListId')}
+            />
+            <button type={'submit'}>Get tasks</button>
+        </form>
     </div>
 }
 
 export const DeleteTasks = () => {
-    const [state, setState] = useState<any>(null)
-    const onSubmitHandler = (formData: FormDataType) => {
-        todolistAPI.deleteTask(formData.todoListId, formData.taskId)
-            .then((res) => {
-                setState(res.data);
-            })
-    }
+    const [state, setState] = useState<any>(null);
+
+    const formik = useFormik({
+        initialValues: {
+            todoListId: '',
+            taskId: ''
+        },
+        onSubmit: values => {
+            todolistAPI.deleteTask(values.todoListId, values.taskId)
+                .then((res) => {
+                    setState(res.data);
+                })
+        }
+    });
 
     return <div>{JSON.stringify(state)}
-        <TodoListIdTaskIdReduxForm onSubmit={onSubmitHandler}/>
+        <form onSubmit={formik.handleSubmit}>
+            <input placeholder={'Todolist id'}
+                   {...formik.getFieldProps('todoListId')}
+            />
+            <input placeholder={'Task id'}
+                   {...formik.getFieldProps('taskId')}/>
+            <button type={'submit'}>Delete Task</button>
+        </form>
     </div>
 }
 
 export const AddTask = () => {
-    const [state, setState] = useState<any>(null)
-    const onSubmitHandler = (formData:FormDataType) => {
-        todolistAPI.addTask(formData.todoListId, formData.title)
-            .then((res) => {
-                setState(res.data);
-            })
-    }
+    const [state, setState] = useState<any>(null);
+
+    const formik = useFormik({
+        initialValues: {
+            todoListId: '',
+            title: ''
+        },
+        onSubmit: values => {
+            todolistAPI.addTask(values.todoListId, values.title)
+                .then((res) => {
+                    setState(res.data);
+                });
+            formik.resetForm()
+        }
+    });
+
     return <div>{JSON.stringify(state)}
-        <TodoListIdTitleTaskReduxForm onSubmit={onSubmitHandler}/>
+        <form onSubmit={formik.handleSubmit}>
+            <input placeholder={'Todolist id'}
+                   {...formik.getFieldProps('todoListId')}
+            />
+            <input placeholder={'Task title'}
+                   {...formik.getFieldProps('title')}/>
+            <button type={'submit'}>Add Task</button>
+        </form>
     </div>
 }
 
 export const UpdateTask = () => {
     const [state, setState] = useState<any>(null)
-   const onSubmitHandler = (formData: FormDataType) => {
-        const {todoListTitle, todoListId, taskId, ...model} = formData
-        todolistAPI.updateTask(formData.todoListId, formData.taskId, model)
-            .then((res) => {
-                setState(res.data);
-            })
-    }
+
+        const formik = useFormik({
+            initialValues: {
+                todoListId: '',
+                taskId: '',
+                title: '',
+                description: '',
+                status: 0,
+                priority: 0,
+                startDate: '',
+                deadline: ''
+
+            },
+            onSubmit: values => {
+                const {todoListId, taskId, ...model} = values
+                todolistAPI.updateTask(todoListId, taskId, model)
+                    .then((res) => {
+                        setState(res.data);
+                    })
+            },
+        });
+
     return <div>{JSON.stringify(state)}
-        <TodoListIdTaskIdTaskTitleReduxForm onSubmit={onSubmitHandler}/>
+        <form onSubmit={formik.handleSubmit}>
+            <input placeholder={'Todolist id'} {...formik.getFieldProps('todoListId')}/>
+            <input placeholder={'Task id'} {...formik.getFieldProps('taskId')}/>
+            <input placeholder={'Task title'} {...formik.getFieldProps('title')}/>
+            <input placeholder={'Description'} {...formik.getFieldProps('description')}/>
+            <input type={'number'} placeholder={'Status'} {...formik.getFieldProps('status')}/>
+            <input type={'number'} placeholder={'Priority'} {...formik.getFieldProps('priority')}/>
+            <input placeholder={'StartDate'} {...formik.getFieldProps('startDate')}/>
+            <input placeholder={'Deadline'} {...formik.getFieldProps('deadline')}/>
+            <button type={'submit'}>Update Task</button>
+        </form>
     </div>
 }
 
-
-
-type FormDataType = {
-    todoListTitle: string
-    todoListId: string
-    taskId: string
-    title: string
-    description: string
-    status: number
-    priority: number
-    startDate: string
-    deadline: string
-}
-
-const TitleForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
-    return (
-        <form onSubmit={props.handleSubmit}>
-            <Field placeholder={'Title'} name={'todoListTitle'} component={'input'}/>
-            <button type={'submit'}>Add Todolist</button>
-        </form>
-    )
-}
-
-const TitleReduxForm = reduxForm<FormDataType>({form: "TodoList"})(TitleForm);
-
-type TodoListIdFormPropsType = {
-    title: string
-}
-
-const TodoListIdForm: React.FC<InjectedFormProps<FormDataType, TodoListIdFormPropsType> & TodoListIdFormPropsType> = (props) => {
-    return (
-        <form onSubmit={props.handleSubmit}>
-            <Field placeholder={'Todolist id'} name={'todoListId'} component={'input'}/>
-            <button type={'submit'}>{props.title}</button>
-        </form>
-    )
-}
-
-const TodoListIdReduxForm = reduxForm<FormDataType, TodoListIdFormPropsType>({form: "TodoList"})(TodoListIdForm);
-
-const TodoListIdTitleForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
-    return (
-        <form onSubmit={props.handleSubmit}>
-            <Field placeholder={'Todolist id'} name={'todoListId'} component={'input'}/>
-            <Field placeholder={'Title'} name={'todoListTitle'} component={'input'}/>
-            <button type={'submit'}>Change Todolist</button>
-        </form>
-    )
-}
-
-const TodoListIdTitleReduxForm = reduxForm<FormDataType>({form: "TodoList"})(TodoListIdTitleForm);
-
-const TodoListIdTitleTaskForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
-    return (
-        <form onSubmit={props.handleSubmit}>
-            <Field placeholder={'Todolist id'} name={'todoListId'} component={'input'}/>
-            <Field placeholder={'Task title'} name={'taskTitle'} component={'input'}/>
-            <button type={'submit'}>Add Task</button>
-        </form>
-    )
-}
-
-const TodoListIdTitleTaskReduxForm = reduxForm<FormDataType>({form: "TodoList"})(TodoListIdTitleTaskForm);
-
-
-const TodoListIdTaskIdForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
-    return (
-
-            <form onSubmit={props.handleSubmit}>
-                <Field placeholder={'Todolist id'} name={'todoListId'} component={'input'}/>
-                <Field placeholder={'Task id'} name={'taskId'} component={'input'}/>
-                <button type={'submit'}>Delete Task</button>
-            </form>
-
-    )
-}
-
-const TodoListIdTaskIdReduxForm = reduxForm<FormDataType>({form: "TodoList"})(TodoListIdTaskIdForm);
-
-const TodoListIdTaskIdTaskTitleForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
-    return (
-
-        <form onSubmit={props.handleSubmit}>
-            <Field placeholder={'Todolist id'} name={'todoListId'} component={'input'}/>
-            <Field placeholder={'Task id'} name={'taskId'} component={'input'}/>
-            <Field placeholder={'Task title'} name={'title'} component={'input'}/>
-            <Field placeholder={'Description'} name={'description'} component={'input'}/>
-            <Field placeholder={'Status'} name={'status'} component={'input'}/>
-            <Field placeholder={'Priority'} name={'priority'} component={'input'}/>
-            <Field placeholder={'StartDate'} name={'startDate'} component={'input'}/>
-            <Field placeholder={'Deadline'} name={'deadline'} component={'input'}/>
-            <button type={'submit'}>Update Task</button>
-        </form>
-
-    )
-}
-
-const TodoListIdTaskIdTaskTitleReduxForm = reduxForm<FormDataType>({form: "TodoList"})(TodoListIdTaskIdTaskTitleForm);

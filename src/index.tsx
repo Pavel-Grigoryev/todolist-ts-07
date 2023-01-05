@@ -6,6 +6,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import {Provider} from "react-redux";
 import {App} from "./app/App";
 import {store} from "./app/store";
+import { BrowserRouter } from "react-router-dom";
 
 
 const theme = createTheme({
@@ -23,7 +24,9 @@ const theme = createTheme({
 ReactDOM.render(
     <ThemeProvider theme={theme}>
         <Provider store={store}>
-            <App/>
+            <BrowserRouter>
+                <App/>
+            </BrowserRouter>
         </Provider>
     </ThemeProvider>
     ,document.getElementById('root'));

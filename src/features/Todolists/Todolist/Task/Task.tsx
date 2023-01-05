@@ -6,11 +6,11 @@ import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import {deleteTaskTC, TaskDomainType, updateTaskTC} from "../../tasks-reducer";
 import {TasksStatuses} from "../../../../api/todolist-api";
-import {AppDispatch} from "../../../../app/store";
+import {useAppDispatch} from "../../../../app/store";
 
 export const Task = memo((props: TaskPropsType) => {
 
-    const dispatch = AppDispatch();
+    const dispatch = useAppDispatch();
 
     const onChangeTaskStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
          let status = e.currentTarget.checked ? props.task.status = TasksStatuses.Completed : TasksStatuses.New;

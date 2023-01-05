@@ -4,20 +4,22 @@ import {TodolistActionsType, todoListReducer} from "../features/Todolists/todoli
 import {useDispatch, useSelector, TypedUseSelectorHook} from "react-redux";
 import {TasksActionsType, tasksReducer} from "../features/Todolists/tasks-reducer";
 import {AppActionsType, appReducer} from "./app-reducer";
+import {AuthActionsType, authReducer} from "../features/Login/auth-reducer";
 
 
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
     todolists: todoListReducer,
-    app: appReducer
+    app: appReducer,
+    auth: authReducer
 })
 
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
 //Custom hooks
 
-export const AppDispatch = () => useDispatch<AppDispatchType>();
+export const useAppDispatch = () => useDispatch<AppDispatchType>();
 
 export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector;
 
@@ -27,7 +29,7 @@ export type AppRootStateType = ReturnType<typeof rootReducer>
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, ActionTypes>
 
-export type ActionTypes = TodolistActionsType | TasksActionsType | AppActionsType
+export type ActionTypes = TodolistActionsType | TasksActionsType | AppActionsType | AuthActionsType
 
 type AppDispatchType = ThunkDispatch<AppRootStateType, unknown, ActionTypes>
 

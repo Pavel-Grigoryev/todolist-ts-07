@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useEffect} from 'react';
+import React, {memo, useCallback} from 'react';
 import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
 import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
 import Typography from "@mui/material/Typography";
@@ -15,28 +15,20 @@ import {
     updateTodolistTC
 } from "../todolist-reducer";
 import {TasksStatuses} from "../../../api/todolist-api";
-import {addTaskTC, setTasksTC, TasksStateType} from "../tasks-reducer";
-import {AppDispatch, useAppSelector} from "../../../app/store";
+import {addTaskTC, TasksStateType} from "../tasks-reducer";
+import {useAppDispatch, useAppSelector} from "../../../app/store";
 
 
 
 
-export const Todolist = memo(({demo = false, todolist}: PropsType) => {
+export const Todolist = memo(({todolist}: PropsType) => {
 
     const {id, filter, title, entityStatus} = todolist;
 
-    const dispatch = AppDispatch();
+    const dispatch = useAppDispatch();
 
     const objTasks = useAppSelector<TasksStateType>(state => state.tasks);
     let tasks = objTasks[id];
-
-    useEffect(() => {
-        if(demo) {
-            return
-        } else {
-            dispatch(setTasksTC(id))
-        }
-    }, [])
 
     const addTask = useCallback((title: string) => {
         dispatch(addTaskTC(id, title));
@@ -125,5 +117,4 @@ const ButtonWithMemo = memo((props: ButtonWithMemoPropsType) => {
 
 type PropsType = {
     todolist: TodoListDomainType
-    demo?: boolean
 }
