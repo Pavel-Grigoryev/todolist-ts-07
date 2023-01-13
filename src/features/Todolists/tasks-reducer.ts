@@ -78,11 +78,11 @@ export const setTasksAC = (todolistId: string, tasks: Array<TaskType>) => ({
 //Thunks
 
 export const setTasksTC = (todolistId: string): AppThunk => async (dispatch) => {
-    dispatch(setAppStatusAC("loading"));
+    dispatch(setAppStatusAC({status: "loading"}));
     try {
         const res = await todolistAPI.getTasks(todolistId);
         dispatch(setTasksAC(todolistId, res.data.items));
-        dispatch(setAppStatusAC("succeeded"));
+        dispatch(setAppStatusAC({status:"succeeded"}));
     } catch (e) {
         if (axios.isAxiosError<AxiosError<{ message: string }>>(e)) {
             handleServerNetworkError(e, dispatch);
@@ -92,12 +92,12 @@ export const setTasksTC = (todolistId: string): AppThunk => async (dispatch) => 
 }
 
 export const addTaskTC = (todolistId: string, title: string): AppThunk => async (dispatch) => {
-    dispatch(setAppStatusAC("loading"));
+    dispatch(setAppStatusAC({status: "loading"}));
     try {
         const res = await todolistAPI.addTask(todolistId, title)
         if (res.data.resultCode === RESULT_CODE.SUCCESS) {
             dispatch(addTaskAC(res.data.data.item));
-            dispatch(setAppStatusAC("succeeded"));
+            dispatch(setAppStatusAC({status: "succeeded"}));
         } else {
             handleServerAppError(res.data, dispatch);
         }
@@ -111,12 +111,12 @@ export const addTaskTC = (todolistId: string, title: string): AppThunk => async 
 }
 
 export const deleteTaskTC = (todolistId: string, taskId: string): AppThunk => async (dispatch) => {
-    dispatch(setAppStatusAC("loading"));
+    dispatch(setAppStatusAC({status: "loading"}));
     dispatch(updateTaskAC(todolistId, taskId,{entityStatus: "loading"}));
     try {
         const res = todolistAPI.deleteTask(todolistId, taskId);
         dispatch(removeTaskAC(taskId, todolistId));
-        dispatch(setAppStatusAC("succeeded"));
+        dispatch(setAppStatusAC({status: "succeeded"}));
 
     } catch (e) {
         if (axios.isAxiosError<AxiosError<{ message: string }>>(e)) {
@@ -128,7 +128,7 @@ export const deleteTaskTC = (todolistId: string, taskId: string): AppThunk => as
 }
 
 export const updateTaskTC = (todolistId: string, taskId: string, model: TaskPayloadUpdateType): AppThunk => async (dispatch, getState) => {
-    dispatch(setAppStatusAC("loading"));
+    dispatch(setAppStatusAC({status: "loading"}));
     dispatch(updateTaskAC(todolistId, taskId,{entityStatus: "loading"}));
     try {
         const task = getState().tasks[todolistId].find(t => t.id === taskId);
@@ -147,7 +147,7 @@ export const updateTaskTC = (todolistId: string, taskId: string, model: TaskPayl
             }
             const res = await todolistAPI.updateTask(todolistId, taskId, newModel);
             dispatch(updateTaskAC(todolistId, taskId, newModel));
-            dispatch(setAppStatusAC("succeeded"));
+            dispatch(setAppStatusAC({status:"succeeded"}));
             dispatch(updateTaskAC(todolistId, taskId,{entityStatus: "succeeded"}));
         }
 

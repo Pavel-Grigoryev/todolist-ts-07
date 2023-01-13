@@ -10,7 +10,7 @@ const initialState = {
 }
 
 
-export const authReducer = (state: InitialStateType = initialState, action: AuthActionsType): InitialStateType => {
+export const authReducer2 = (state: InitialStateType = initialState, action: AuthActionsType): InitialStateType => {
     switch (action.type) {
         case 'login/SET-IS-LOGGED-IN':
             return {...state, isLoggedIn: action.value}
@@ -25,12 +25,12 @@ export const setIsLoggedInAC = (value: boolean) =>
 
 // thunks
 export const loginTC = (data: AuthDataType): AppThunk => async (dispatch) => {
-    dispatch(setAppStatusAC('loading'));
+    dispatch(setAppStatusAC({status: 'loading'}));
     try {
         const res = await authAPI.login(data);
         if (res.data.resultCode === RESULT_CODE.SUCCESS) {
             dispatch(setIsLoggedInAC(true));
-            dispatch(setAppStatusAC("succeeded"));
+            dispatch(setAppStatusAC({status: 'succeeded'}));
         } else {
             handleServerAppError(res.data, dispatch);
         }
@@ -42,13 +42,13 @@ export const loginTC = (data: AuthDataType): AppThunk => async (dispatch) => {
 }
 
 export const logoutTC = (): AppThunk => async (dispatch) => {
-    dispatch(setAppStatusAC('loading'));
+    dispatch(setAppStatusAC({status: 'loading'}));
     try {
         const res = await authAPI.logout()
         if (res.data.resultCode === RESULT_CODE.SUCCESS) {
             dispatch(setIsLoggedInAC(false));
             dispatch(clearTodosDataAC());
-            dispatch(setAppStatusAC("succeeded"));
+            dispatch(setAppStatusAC({status: 'succeeded'}));
         } else {
             handleServerAppError(res.data, dispatch);
         }

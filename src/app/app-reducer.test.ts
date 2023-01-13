@@ -14,7 +14,7 @@ beforeEach(() => {
 
 test('app should be changed its status', () => {
 
-    const endState = appReducer(startState, setAppStatusAC("loading"))
+    const endState = appReducer(startState, setAppStatusAC({status: "loading"}))
 
     expect(endState.status).toBe("loading");
 
@@ -22,7 +22,7 @@ test('app should be changed its status', () => {
 
 test('app should be changed its error message', () => {
 
-    const endState = appReducer(startState, setAppErrorAC("Some error"))
+    const endState = appReducer(startState, setAppErrorAC({error: "Some error"}))
 
     expect(endState.error).toBe("Some error");
     expect(endState.status).toBe("idle");
@@ -31,7 +31,7 @@ test('app should be changed its error message', () => {
 
 test('app should be changed its Initialized status', () => {
 
-    const endState = appReducer(startState, setAppInitializedAC(true))
+    const endState = appReducer(startState, setAppInitializedAC({isInitialized: true}))
 
     expect(endState.isInitialized).toBe(true);
     expect(endState.status).toBe("idle");
