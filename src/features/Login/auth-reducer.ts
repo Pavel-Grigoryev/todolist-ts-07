@@ -4,24 +4,28 @@ import {authAPI, AuthDataType} from "../../api/todolist-api";
 import {clearTodosDataAC, RESULT_CODE} from "../Todolists/todolist-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 import axios, {AxiosError} from "axios";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 const initialState = {
     isLoggedIn: false
 }
 
-
-export const authReducer2 = (state: InitialStateType = initialState, action: AuthActionsType): InitialStateType => {
-    switch (action.type) {
-        case 'login/SET-IS-LOGGED-IN':
-            return {...state, isLoggedIn: action.value}
-        default:
-            return state
+const slice = createSlice({
+    name: 'auth',
+    initialState,
+    reducers: {
+        setIsLoggedInAC(state, action: PayloadAction<{ isLoggedIn: boolean}> ) {
+            state.isLoggedIn = action.payload.isLoggedIn
+        }
     }
-}
+})
+
+
+export const authReducer = slice.reducer
 
 // actions
-export const setIsLoggedInAC = (value: boolean) =>
-    ({type: 'login/SET-IS-LOGGED-IN', value} as const)
+
+export const {setIsLoggedInAC} = slice.actions
 
 // thunks
 export const loginTC = (data: AuthDataType): AppThunk => async (dispatch) => {
@@ -29,7 +33,7 @@ export const loginTC = (data: AuthDataType): AppThunk => async (dispatch) => {
     try {
         const res = await authAPI.login(data);
         if (res.data.resultCode === RESULT_CODE.SUCCESS) {
-            dispatch(setIsLoggedInAC(true));
+            dispatch(setIsLoggedInAC({isLoggedIn: true}));
             dispatch(setAppStatusAC({status: 'succeeded'}));
         } else {
             handleServerAppError(res.data, dispatch);
@@ -46,7 +50,7 @@ export const logoutTC = (): AppThunk => async (dispatch) => {
     try {
         const res = await authAPI.logout()
         if (res.data.resultCode === RESULT_CODE.SUCCESS) {
-            dispatch(setIsLoggedInAC(false));
+            dispatch(setIsLoggedInAC({isLoggedIn: false}));
             dispatch(clearTodosDataAC());
             dispatch(setAppStatusAC({status: 'succeeded'}));
         } else {

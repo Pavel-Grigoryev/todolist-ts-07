@@ -32,6 +32,8 @@ const slice = createSlice({
 
 export const appReducer = slice.reducer;
 
+// actions
+
 export const {setAppStatusAC, setAppErrorAC, setAppInitializedAC} = slice.actions;
 
 //Thunks
@@ -41,7 +43,7 @@ export const initializeAppTC = (): AppThunk => async (dispatch) => {
     try {
         const res = await authAPI.me();
         if (res.data.resultCode === RESULT_CODE.SUCCESS) {
-            dispatch(setIsLoggedInAC(true));
+            dispatch(setIsLoggedInAC({isLoggedIn: true}));
             dispatch(setAppStatusAC({status: "succeeded"}));
         } else {
             handleServerAppError(res.data, dispatch);
