@@ -1,4 +1,11 @@
-import {AddTodolistAT, ClearTodosDataAT, DeleteTodolistAT, RESULT_CODE, SetTodolistAT} from "./todolist-reducer";
+import {
+    addTodolistAC,
+    AddTodolistAT, clearTodosDataAC,
+    ClearTodosDataAT, deleteTodolistAC,
+    DeleteTodolistAT,
+    RESULT_CODE, setTodolistAC,
+    SetTodolistAT
+} from "./todolist-reducer";
 import {TaskPayloadType, TaskType, todolistAPI} from "../../api/todolist-api";
 import {AppThunk} from "../../app/store";
 import {RequestStatusType, setAppStatusAC} from "../../app/app-reducer";
@@ -27,25 +34,25 @@ export const tasksReducer = (state = initialState, action: TasksActionsType): Ta
                     ...action.model
                 } : t)
             }
-        case "ADD-TODOLIST":
+        case addTodolistAC.type:
             return {
                 ...state,
-                [action.todolist.id]: []
+                [action.payload.todolist.id]: []
             }
-        case "REMOVE-TODOLIST":
+        case deleteTodolistAC.type:
             let copyState = {...state}
-            delete copyState[action.todolistId]
+            delete copyState[action.payload.todolistId]
             return copyState
-        case "SET-TODOLIST": {
+        case setTodolistAC.type: {
             const copyState = {...state}
-            action.todolists.forEach(tl => {
+            action.payload.todolists.forEach(tl => {
                 copyState[tl.id] = [];
             })
             return copyState;
         }
         case "SET-TASKS":
             return {...state, [action.todolistId]: action.tasks.map(t => ({...t, entityStatus: "idle"}))};
-        case "CLEAR-DATA":
+        case clearTodosDataAC.type:
             return {};
         default:
             return state

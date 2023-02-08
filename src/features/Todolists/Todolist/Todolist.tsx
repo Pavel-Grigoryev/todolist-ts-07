@@ -19,8 +19,6 @@ import {addTaskTC, TasksStateType} from "../tasks-reducer";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 
 
-
-
 export const Todolist = memo(({todolist}: PropsType) => {
 
     const {id, filter, title, entityStatus} = todolist;
@@ -42,9 +40,15 @@ export const Todolist = memo(({todolist}: PropsType) => {
         dispatch(updateTodolistTC(id, title));
     }, [id]);
 
-    const onAllClickHandler = useCallback(() => dispatch(changeTodolistFilterAC("all", id)), [id, dispatch]);
-    const onActiveClickHandler = useCallback(() => dispatch(changeTodolistFilterAC("active", id)), [id, dispatch]);
-    const onCompletedClickHandler = useCallback(() => dispatch(changeTodolistFilterAC("completed", id)), [id, dispatch]);
+    const onAllClickHandler = useCallback(() => dispatch(changeTodolistFilterAC({filter: "all", id})), [id, dispatch]);
+    const onActiveClickHandler = useCallback(() => dispatch(changeTodolistFilterAC({
+        filter: "active",
+        id
+    })), [id, dispatch]);
+    const onCompletedClickHandler = useCallback(() => dispatch(changeTodolistFilterAC({
+        filter: "completed",
+        id
+    })), [id, dispatch]);
 
     const filterTasks = (filter: FilterValuesType) => {
         if (filter === "active") {
