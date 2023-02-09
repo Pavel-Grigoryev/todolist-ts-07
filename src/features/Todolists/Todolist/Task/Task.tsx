@@ -1,29 +1,29 @@
 import React, {ChangeEvent, memo, useCallback} from 'react';
-import  ListItem from "@mui/material/ListItem";
+import ListItem from "@mui/material/ListItem";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import {deleteTaskTC, TaskDomainType, updateTaskTC} from "features/Todolists/tasks-reducer";
+import {TaskDomainType, tasksThunks} from "features/Todolists/tasks-reducer";
 import {TasksStatuses} from "api/todolist-api";
-import {useAppDispatch} from "app/store";
 import {EditableSpan} from "components/EditableSpan";
+import {useActions} from "hooks/useActions";
 
 export const Task = memo((props: TaskPropsType) => {
 
-    const dispatch = useAppDispatch();
+    const {deleteTaskTC, updateTaskTC} = useActions(tasksThunks)
 
     const onChangeTaskStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
          let status = e.currentTarget.checked ? TasksStatuses.Completed : TasksStatuses.New;
-         dispatch(updateTaskTC(props.todolistId, props.task.id, {status}));
+         updateTaskTC(props.todolistId, props.task.id, {status});
     },[props.task.id]);
 
     const onChangeTaskTitleHandler = useCallback((title: string) => {
-        dispatch(updateTaskTC(props.todolistId, props.task.id, {title}))
+        updateTaskTC(props.todolistId, props.task.id, {title})
     }, [props.task.id,  props.todolistId] );
 
     const removeTaskHandler = () => {
-                dispatch(deleteTaskTC(props.todolistId, props.task.id));
+                deleteTaskTC(props.todolistId, props.task.id);
     };
 
     return (

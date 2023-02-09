@@ -171,6 +171,8 @@ export const updateTaskTC = (todolistId: string, taskId: string, model: TaskPayl
 
 }
 
+export const tasksThunks = {addTaskTC, deleteTaskTC, updateTaskTC, removeTaskAC, addTaskAC, updateTaskAC, setTasksAC}
+
 //Types
 
 export type TaskDomainType = TaskType & {

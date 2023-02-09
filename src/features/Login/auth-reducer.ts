@@ -6,6 +6,7 @@ import {handleServerAppError, handleServerNetworkError} from "utils/error-utils"
 import axios, {AxiosError} from "axios";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
+
 const initialState = {
     isLoggedIn: false
 }
@@ -20,7 +21,6 @@ const slice = createSlice({
     }
 })
 
-
 export const authReducer = slice.reducer
 
 // actions
@@ -28,6 +28,7 @@ export const authReducer = slice.reducer
 export const {setIsLoggedInAC} = slice.actions
 
 // thunks
+
 export const loginTC = (data: AuthDataType): AppThunk => async (dispatch) => {
     dispatch(setAppStatusAC({status: 'loading'}));
     try {
@@ -63,6 +64,7 @@ export const logoutTC = (): AppThunk => async (dispatch) => {
     }
 }
 
+export const authThunks = {logoutTC, loginTC, setIsLoggedInAC}
 
 // types
 

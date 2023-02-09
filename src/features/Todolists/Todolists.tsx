@@ -1,15 +1,16 @@
-import {useAppDispatch, useAppSelector} from "app/store";
 import React, {useCallback, useEffect} from "react";
-import {addTodolistTC, getTodolistsTC, TodoListDomainType} from "./todolist-reducer";
+import {TodoListDomainType, todolistThunks} from "./todolist-reducer";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import {AddItemForm} from "components/AddItemForm";
 import {Todolist} from "./Todolist/Todolist";
 import {Navigate} from "react-router-dom";
+import {useActions} from "hooks/useActions";
+import {useAppSelector} from "hooks/useAppSelector";
 
 export const Todolists = ({demo = false}: TodolistsPropsType) => {
 
-    const dispatch = useAppDispatch();
+    const {getTodolistsTC, addTodolistTC} = useActions(todolistThunks)
 
     const todolists = useAppSelector<Array<TodoListDomainType>>(state => state.todolists);
 
@@ -19,13 +20,13 @@ export const Todolists = ({demo = false}: TodolistsPropsType) => {
         if (demo || !isLoggedIn) {
             return
         } else {
-            dispatch(getTodolistsTC());
+            getTodolistsTC();
         }
     }, [])
 
     const addTodolist = useCallback((title: string) => {
-        dispatch(addTodolistTC(title));
-    }, [dispatch])
+        addTodolistTC(title);
+    }, [])
 
     if (!isLoggedIn) {
         return <Navigate to={"/login"}/>
@@ -34,8 +35,8 @@ export const Todolists = ({demo = false}: TodolistsPropsType) => {
     return (
         <>
             <Grid container style={{margin: "30px 0"}}>
-            <AddItemForm addItem={addTodolist}/>
-        </Grid>
+                <AddItemForm addItem={addTodolist}/>
+            </Grid>
             <Grid container spacing={5}>
                 {
                     todolists.map(tl => {

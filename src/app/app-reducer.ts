@@ -57,6 +57,8 @@ export const initializeAppTC = (): AppThunk => async (dispatch) => {
     }
 }
 
+export const appThunks = { setAppStatusAC, setAppErrorAC, setAppInitializedAC, initializeAppTC }
+
 
 //Types
 export type InitialStateType = typeof initialState;

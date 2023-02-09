@@ -65,35 +65,6 @@ export const {
     clearTodosDataAC
 } = slice.actions
 
-
-/*export const todoListReducerOld = (state = initialState, action: TodolistActionsType): Array<TodoListDomainType> => {
-    switch (action.type) {
-        case "REMOVE-TODOLIST":
-            return state.filter(tl => tl.id !== action.todolistId)
-        case "ADD-TODOLIST":
-            let newTodolist: TodoListDomainType =
-                {
-                    ...action.todolist,
-                    filter: 'all',
-                    entityStatus: 'idle'
-                };
-            return [newTodolist, ...state]
-        case "CHANGE-TODOLIST-FILTER":
-            return state.map(tl => tl.id === action.todolistId ? {...tl, filter: action.filter} : tl)
-        case "CHANGE-TODOLIST-TITLE":
-            return state.map(tl => tl.id === action.todolistId ? {...tl, title: action.title} : tl);
-        case "TODOLIST/CHANGE-TODOLIST-ENTITY-STATYS":
-            return state.map(tl => tl.id === action.id ? {...tl, entityStatus: action.entityStatus} : tl);
-        case "SET-TODOLIST":
-            return action.todolists.map(tl => ({...tl, filter: "all", entityStatus: "idle"}));
-        case "CLEAR-DATA":
-            return [];
-        default:
-            return state
-    }
-}*/
-
-
 //Thunks
 
 export const getTodolistsTC = (): AppThunk => (dispatch) => {
@@ -172,6 +143,15 @@ export const updateTodolistTC = (id: string, title: string): AppThunk => (dispat
         })
 }
 
+export const todolistThunks = {
+    deleteTodolistAC,
+    addTodolistAC,
+    changeTodolistFilterAC,
+    changeTodolistTitleAC,
+    changeTodolistEntityStatusAC,
+    setTodolistAC,
+    clearTodosDataAC, getTodolistsTC, deleteTodolistTC, addTodolistTC, updateTodolistTC
+}
 
 //Types
 

@@ -8,14 +8,15 @@ import Toolbar from '@mui/material/Toolbar';
 import {Menu} from "@mui/icons-material";
 import {Todolists} from "features/Todolists/Todolists";
 import LinearProgress from "@mui/material/LinearProgress";
-import {useAppDispatch, useAppSelector} from "./store";
-import {initializeAppTC, RequestStatusType} from "./app-reducer";
+import {appThunks, RequestStatusType} from "./app-reducer";
 import Container from "@mui/material/Container";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "features/Login/Login";
 import CircularProgress from "@mui/material/CircularProgress";
-import {logoutTC} from "features/Login/auth-reducer";
+import {authThunks} from "features/Login/auth-reducer";
 import {ErrorSnackbar} from "components/ErrorSnackbar";
+import {useActions} from "../hooks/useActions";
+import {useAppSelector} from "../hooks/useAppSelector";
 
 
 export function App({demo = false}: AppPropsType) {
@@ -26,14 +27,15 @@ export function App({demo = false}: AppPropsType) {
 
     const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn);
 
-    const dispatch = useAppDispatch();
+    const {initializeAppTC} = useActions(appThunks);
+    const {logoutTC} = useActions(authThunks);
 
     useEffect(() => {
-        dispatch(initializeAppTC());
+        initializeAppTC();
     }, [])
 
     const logoutHandler = () => {
-        dispatch(logoutTC());
+        logoutTC();
     }
 
     if (!isInitialized) {
