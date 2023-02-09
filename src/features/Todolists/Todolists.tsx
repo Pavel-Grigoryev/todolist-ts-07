@@ -1,9 +1,9 @@
-import {useAppDispatch, useAppSelector} from "../../app/store";
+import {useAppDispatch, useAppSelector} from "app/store";
 import React, {useCallback, useEffect} from "react";
 import {addTodolistTC, getTodolistsTC, TodoListDomainType} from "./todolist-reducer";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
+import {AddItemForm} from "components/AddItemForm";
 import {Todolist} from "./Todolist/Todolist";
 import {Navigate} from "react-router-dom";
 

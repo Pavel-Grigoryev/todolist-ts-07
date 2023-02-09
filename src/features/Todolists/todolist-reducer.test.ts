@@ -6,7 +6,7 @@ import {
     TodoListDomainType,
     todoListReducer, changeTodolistEntityStatusAC, clearTodosDataAC
 } from "./todolist-reducer";
-import {RequestStatusType} from "../../app/app-reducer";
+import {RequestStatusType} from "app/app-reducer";
 
 
 let todolistId1: string;

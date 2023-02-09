@@ -6,10 +6,10 @@ import {
     RESULT_CODE, setTodolistAC,
     SetTodolistAT
 } from "./todolist-reducer";
-import {TaskPayloadType, TaskType, todolistAPI} from "../../api/todolist-api";
-import {AppThunk} from "../../app/store";
-import {RequestStatusType, setAppStatusAC} from "../../app/app-reducer";
-import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
+import {TaskPayloadType, TaskType, todolistAPI} from "api/todolist-api";
+import {AppThunk} from "app/store";
+import {RequestStatusType, setAppStatusAC} from "app/app-reducer";
+import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
 import axios, {AxiosError} from "axios";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 

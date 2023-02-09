@@ -6,16 +6,17 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import {Menu} from "@mui/icons-material";
-import {Todolists} from "../features/Todolists/Todolists";
+import {Todolists} from "features/Todolists/Todolists";
 import LinearProgress from "@mui/material/LinearProgress";
 import {useAppDispatch, useAppSelector} from "./store";
 import {initializeAppTC, RequestStatusType} from "./app-reducer";
 import Container from "@mui/material/Container";
-import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {Navigate, Route, Routes} from "react-router-dom";
-import {Login} from "../features/Login/Login";
+import {Login} from "features/Login/Login";
 import CircularProgress from "@mui/material/CircularProgress";
-import {logoutTC} from "../features/Login/auth-reducer";
+import {logoutTC} from "features/Login/auth-reducer";
+import {ErrorSnackbar} from "components/ErrorSnackbar";
+
 
 export function App({demo = false}: AppPropsType) {
 
@@ -38,7 +39,7 @@ export function App({demo = false}: AppPropsType) {
     if (!isInitialized) {
         return <div
             style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
-            <CircularProgress style={{width: "80px", height: "80px"}} />
+            <CircularProgress style={{width: "80px", height: "80px"}}/>
         </div>
     }
 
@@ -66,7 +67,7 @@ export function App({demo = false}: AppPropsType) {
                 <Routes>
                     <Route path={"/"} element={<Todolists demo={demo}/>}/>
                     <Route path={"/login"} element={<Login/>}/>
-                    <Route path="/404" element={<h1>404: PAGE NOT FOUND</h1>} />
+                    <Route path="/404" element={<h1>404: PAGE NOT FOUND</h1>}/>
                     <Route path="*" element={<Navigate to={"/404"}/>}/>
                 </Routes>
             </Container>

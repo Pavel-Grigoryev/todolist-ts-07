@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import {loginTC} from "./auth-reducer";
-import {useAppDispatch, useAppSelector} from "../../app/store";
+import {useAppDispatch, useAppSelector} from "app/store";
 import {Navigate} from "react-router-dom";
 
 export const Login = () => {

@@ -1,7 +1,7 @@
-import {todolistAPI, TodoListType} from "../../api/todolist-api";
-import {AppThunk} from "../../app/store";
-import {RequestStatusType, setAppStatusAC} from "../../app/app-reducer";
-import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
+import {todolistAPI, TodoListType} from "api/todolist-api";
+import {AppThunk} from "app/store";
+import {RequestStatusType, setAppStatusAC} from "app/app-reducer";
+import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
 import {AxiosError} from "axios";
 import {setTasksTC} from "./tasks-reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
@@ -130,7 +130,7 @@ export const deleteTodolistTC = (id: string): AppThunk => (dispatch) => {
         ).catch((err: AxiosError<{ message: string }>) => {
         handleServerNetworkError(err, dispatch);
     }).finally(() => {
-        dispatch(changeTodolistEntityStatusAC({id,entityStatus: "failed"}));
+        dispatch(changeTodolistEntityStatusAC({id, entityStatus: "failed"}));
     })
 }
 
@@ -139,7 +139,7 @@ export const addTodolistTC = (title: string): AppThunk => (dispatch) => {
     todolistAPI.addTodolist(title)
         .then((res) => {
                 if (res.data.resultCode === RESULT_CODE.SUCCESS) {
-                    dispatch(addTodolistAC({ todolist: res.data.data.item}));
+                    dispatch(addTodolistAC({todolist: res.data.data.item}));
                     dispatch(setAppStatusAC({status: "succeeded"}));
                 } else {
                     handleServerAppError(res.data, dispatch);
@@ -153,7 +153,7 @@ export const addTodolistTC = (title: string): AppThunk => (dispatch) => {
 
 export const updateTodolistTC = (id: string, title: string): AppThunk => (dispatch) => {
     dispatch(setAppStatusAC({status: "loading"}));
-    dispatch(changeTodolistEntityStatusAC({id,entityStatus: "loading"}));
+    dispatch(changeTodolistEntityStatusAC({id, entityStatus: "loading"}));
     todolistAPI.updateTodolist(id, title)
         .then((res) => {
                 if (res.data.resultCode === RESULT_CODE.SUCCESS) {

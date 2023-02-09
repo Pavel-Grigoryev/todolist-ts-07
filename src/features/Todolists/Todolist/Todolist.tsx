@@ -1,6 +1,6 @@
 import React, {memo, useCallback} from 'react';
-import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
-import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
+import {AddItemForm} from 'components/AddItemForm';
+import {EditableSpan} from 'components/EditableSpan';
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
@@ -14,9 +14,9 @@ import {
     TodoListDomainType,
     updateTodolistTC
 } from "../todolist-reducer";
-import {TasksStatuses} from "../../../api/todolist-api";
+import {TasksStatuses} from "api/todolist-api";
 import {addTaskTC, TasksStateType} from "../tasks-reducer";
-import {useAppDispatch, useAppSelector} from "../../../app/store";
+import {useAppDispatch, useAppSelector} from "app/store";
 
 
 export const Todolist = memo(({todolist}: PropsType) => {

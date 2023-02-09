@@ -2,7 +2,7 @@ import React, {ChangeEvent, KeyboardEvent, memo, useState} from 'react';
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from '@mui/icons-material/Add';
-import {RequestStatusType} from "../../app/app-reducer";
+import {RequestStatusType} from "app/app-reducer";
 
 export const AddItemForm = memo((props: AddItemFormPropsType) => {
     let [title, setTitle] = useState("")

@@ -1,6 +1,6 @@
-import {setAppErrorAC, setAppStatusAC} from "../app/app-reducer";
+import {setAppErrorAC, setAppStatusAC} from "app/app-reducer";
 import {Dispatch} from "redux";
-import {CommonResponseType} from "../api/todolist-api";
+import {CommonResponseType} from "api/todolist-api";
 import {AxiosError} from "axios";
 
 export const handleServerAppError = <T>(data: CommonResponseType<T>, dispatch: Dispatch) => {

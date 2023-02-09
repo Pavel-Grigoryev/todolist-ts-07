@@ -1,8 +1,8 @@
-import {setAppStatusAC} from '../../app/app-reducer'
-import {AppThunk} from "../../app/store";
-import {authAPI, AuthDataType} from "../../api/todolist-api";
+import {setAppStatusAC} from 'app/app-reducer'
+import {AppThunk} from "app/store";
+import {authAPI, AuthDataType} from "api/todolist-api";
 import {clearTodosDataAC, RESULT_CODE} from "../Todolists/todolist-reducer";
-import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
+import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
 import axios, {AxiosError} from "axios";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 

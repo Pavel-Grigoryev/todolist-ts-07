@@ -2,11 +2,12 @@ import React, {ChangeEvent, memo, useCallback} from 'react';
 import  ListItem from "@mui/material/ListItem";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
-import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
+
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import {deleteTaskTC, TaskDomainType, updateTaskTC} from "../../tasks-reducer";
-import {TasksStatuses} from "../../../../api/todolist-api";
-import {useAppDispatch} from "../../../../app/store";
+import {deleteTaskTC, TaskDomainType, updateTaskTC} from "features/Todolists/tasks-reducer";
+import {TasksStatuses} from "api/todolist-api";
+import {useAppDispatch} from "app/store";
+import {EditableSpan} from "components/EditableSpan";
 
 export const Task = memo((props: TaskPropsType) => {
 
