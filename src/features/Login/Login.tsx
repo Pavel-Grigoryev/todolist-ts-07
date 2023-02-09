@@ -11,8 +11,8 @@ import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import {authThunks} from "./auth-reducer";
 import {Navigate} from "react-router-dom";
-import {useActions} from "../../hooks/useActions";
-import {useAppSelector} from "../../hooks/useAppSelector";
+import {useActions} from "hooks/useActions";
+import {useAppSelector} from "hooks/useAppSelector";
 
 export const Login = () => {
 

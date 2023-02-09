@@ -31,7 +31,12 @@ export function App({demo = false}: AppPropsType) {
     const {logoutTC} = useActions(authThunks);
 
     useEffect(() => {
-        initializeAppTC();
+        if (demo || !isLoggedIn) {
+            return
+        } else {
+            initializeAppTC();
+        }
+
     }, [])
 
     const logoutHandler = () => {

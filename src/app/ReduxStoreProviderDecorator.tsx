@@ -1,8 +1,7 @@
-import {AppRootStateType} from "./store";
-import {applyMiddleware, combineReducers, legacy_createStore} from "redux";
-import {ReactNode} from "react";
+import {RootReducerType} from "./store";
+import {combineReducers} from "redux";
+import React, {ReactNode} from "react";
 import {Provider} from "react-redux";
-import React from "react";
 import {v1} from "uuid";
 import {TaskPriorities, TasksStatuses} from "api/todolist-api";
 import {tasksReducer} from "features/Todolists/tasks-reducer";
@@ -10,15 +9,17 @@ import {todoListReducer} from "features/Todolists/todolist-reducer";
 import {appReducer} from "./app-reducer";
 import thunkMiddleware from "redux-thunk";
 import {authReducer} from "features/Login/auth-reducer";
+import {HashRouter} from "react-router-dom";
+import {configureStore} from "@reduxjs/toolkit";
 
-const rootReducer = combineReducers({
+const rootReducer: RootReducerType = combineReducers({
     tasks: tasksReducer,
     todolists: todoListReducer,
     app: appReducer,
     auth: authReducer
 })
 
-const initialGlobalState = {
+const initialGlobalState: AppRootStoryBookStateType = {
     todolists: [
         {id: "todolistId1", title: "What to learn", filter: "all", addedDate: "", order: 0, entityStatus: 'idle'},
         {id: "todolistId2", title: "What to buy", filter: "all", addedDate: "", order: 0, entityStatus: 'loading'}
@@ -76,19 +77,27 @@ const initialGlobalState = {
     app: {
         status: 'idle',
         error: null,
-        isInitialized: false
+        isInitialized: true
     },
     auth: {
-        isLoggedIn: false
+        isLoggedIn: true
     }
 };
 
-export const storyBookStore = legacy_createStore(rootReducer, initialGlobalState as AppRootStateType, applyMiddleware(thunkMiddleware));
+export const storyBookStore = configureStore({
+    reducer: rootReducer,
+    preloadedState: initialGlobalState,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(thunkMiddleware)
+})
 
 export type AppRootStoryBookStateType = ReturnType<typeof rootReducer>
 
 export const ReduxStoreProviderDecorator = (storyFn: () => ReactNode) => {
     return <Provider store={storyBookStore}>{storyFn()}</Provider>
+}
+
+export const BrowserRouterDecorator = (storyFn: () => ReactNode) => {
+    return <HashRouter>{storyFn()}</HashRouter>
 }
 
 //@ts-ignore
