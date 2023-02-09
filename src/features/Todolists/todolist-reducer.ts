@@ -51,7 +51,6 @@ const slice = createSlice({
     }
 })
 
-
 export const todoListReducer = slice.reducer
 
 // Actions

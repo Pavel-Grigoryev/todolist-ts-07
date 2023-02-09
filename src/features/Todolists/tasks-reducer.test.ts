@@ -1,4 +1,3 @@
-
 import {
     addTaskAC,
     removeTaskAC, setTasksAC, TasksStateType, updateTaskAC,
@@ -92,7 +91,7 @@ beforeEach(() => {
 
 test('correct task should be deleted from correct array', () => {
 
-    const action = removeTaskAC('2', 'todolistId2')
+    const action = removeTaskAC({taskId: '2', todolistId: 'todolistId2'})
 
     const endState = tasksReducer(startState, action)
 
@@ -175,7 +174,7 @@ test('correct task should be added to correct array', () => {
         entityStatus: "idle"
     }
 
-    const action = addTaskAC(newTask)
+    const action = addTaskAC({task: newTask})
 
     const endState = tasksReducer(startState, action)
 
@@ -188,7 +187,12 @@ test('correct task should be added to correct array', () => {
 
 test('entityStatus of specified task should be changed', () => {
 
-    const action = updateTaskAC('todolistId2', '2', {entityStatus: "loading"})
+    const action = updateTaskAC({
+        todolistId: 'todolistId2', taskId: '2', model:
+            {
+                entityStatus: "loading"
+            }
+    })
 
     const endState = tasksReducer(startState, action)
 
@@ -198,7 +202,12 @@ test('entityStatus of specified task should be changed', () => {
 
 test('status of specified task should be changed', () => {
 
-    const action = updateTaskAC('todolistId2', '2', {status: TasksStatuses.New})
+    const action = updateTaskAC({
+        todolistId: 'todolistId2', taskId: '2', model:
+            {
+                status: TasksStatuses.New
+            }
+    })
 
     const endState = tasksReducer(startState, action)
 
@@ -209,7 +218,12 @@ test('status of specified task should be changed', () => {
 
 test('title of specified task should be changed', () => {
 
-    const action = updateTaskAC('todolistId2', '2', {title: 'beer'})
+    const action = updateTaskAC({
+        todolistId: 'todolistId2', taskId: '2', model:
+            {
+                title: 'beer'
+            }
+    })
 
     const endState = tasksReducer(startState, action)
 
@@ -284,7 +298,7 @@ test('tasks should be added in correct todolist', () => {
         },
     ]
 
-    const endState = tasksReducer(startState, setTasksAC('todolistId2', tasks))
+    const endState = tasksReducer(startState, setTasksAC({todolistId: 'todolistId2', tasks}))
 
 
     expect(endState['todolistId2'][0].title).toBe('CSS')

@@ -13,7 +13,7 @@ export const Task = memo((props: TaskPropsType) => {
     const dispatch = useAppDispatch();
 
     const onChangeTaskStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-         let status = e.currentTarget.checked ? props.task.status = TasksStatuses.Completed : TasksStatuses.New;
+         let status = e.currentTarget.checked ? TasksStatuses.Completed : TasksStatuses.New;
          dispatch(updateTaskTC(props.todolistId, props.task.id, {status}));
     },[props.task.id]);
 
