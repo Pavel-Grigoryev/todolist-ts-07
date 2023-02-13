@@ -9,14 +9,14 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import {authThunks} from "./auth-reducer";
+import {loginTC} from "./auth-reducer";
 import {Navigate} from "react-router-dom";
-import {useActions} from "hooks/useActions";
 import {useAppSelector} from "hooks/useAppSelector";
+import {useAppDispatch} from "../../hooks/useAppDispatch";
 
 export const Login = () => {
 
-    const {loginTC} = useActions(authThunks)
+    const dispatch = useAppDispatch()
 
     const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn);
 
@@ -31,9 +31,16 @@ export const Login = () => {
             email: Yup.string().required('Required').email('Invalid email address'),
             password: Yup.string().required('Required').min(5, 'Must be 5 characters or more')
         }),
-        onSubmit: values => {
-            loginTC(values);
-            formik.resetForm();
+        onSubmit: async (values, formikHelpers) => {
+            const action = await dispatch(loginTC(values));
+            if (loginTC.rejected.match(action)) {
+                debugger
+                if (action.payload?.fieldsErrors?.length) {
+                    const error = action.payload.fieldsErrors[0]
+                    debugger
+                    formikHelpers.setFieldError(error.field, error.error)
+                }
+            }
         },
     })
 

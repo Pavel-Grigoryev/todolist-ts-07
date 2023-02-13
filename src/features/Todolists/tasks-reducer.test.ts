@@ -1,10 +1,7 @@
-import {
-    addTaskAC,
-    removeTaskAC, setTasksAC, TasksStateType, updateTaskAC,
-} from "./tasks-reducer";
-import {tasksReducer} from "./tasks-reducer";
+import {addTaskAC, removeTaskAC, setTasksAC, tasksReducer, TasksStateType, updateTaskAC,} from "./tasks-reducer";
 import {TaskPriorities, TasksStatuses, TodoListType} from "api/todolist-api";
-import {addTodolistAC, clearTodosDataAC, deleteTodolistAC, setTodolistAC} from "./todolist-reducer";
+import {addTodolistAC, deleteTodolistAC, setTodolistAC} from "./todolist-reducer";
+import {logoutTC} from "../Login/auth-reducer";
 
 let startState: TasksStateType;
 let startTodolists: Array<TodoListType>;
@@ -307,7 +304,7 @@ test('tasks should be added in correct todolist', () => {
 
 test('the state must be set to empty {}', () => {
 
-    const endState = tasksReducer({}, clearTodosDataAC());
+    const endState = tasksReducer({}, logoutTC.fulfilled(undefined, 'requestId', undefined ));
 
     expect(endState).toStrictEqual({})
 })

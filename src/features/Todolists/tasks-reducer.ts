@@ -1,9 +1,10 @@
 import {
     addTodolistAC,
     AddTodolistAT,
-    ClearTodosDataAT, deleteTodolistAC,
+    deleteTodolistAC,
     DeleteTodolistAT,
-    RESULT_CODE, setTodolistAC,
+    RESULT_CODE,
+    setTodolistAC,
     SetTodolistAT
 } from "./todolist-reducer";
 import {TaskPayloadType, TaskType, todolistAPI} from "api/todolist-api";
@@ -12,6 +13,7 @@ import {RequestStatusType, setAppStatusAC} from "app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
 import axios, {AxiosError} from "axios";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {logoutTC} from "../Login/auth-reducer";
 
 export let initialState: TasksStateType = {};
 
@@ -51,6 +53,9 @@ const slice = createSlice({
             action.payload.todolists.forEach(tl => {
                 state[tl.id] = [];
             })
+        })
+        builder.addCase(logoutTC.fulfilled, () => {
+            return {};
         })
     }
 })
@@ -196,8 +201,7 @@ export type TasksActionsType =
     | AddTodolistAT
     | DeleteTodolistAT
     | SetTodolistAT
-    | setTasksAT
-    | ClearTodosDataAT;
+    | setTasksAT;
 
 export type TaskPayloadUpdateType = {
     title?: string

@@ -1,12 +1,17 @@
 import {v1} from "uuid";
 import {
-    addTodolistAC, changeTodolistFilterAC, changeTodolistTitleAC,
+    addTodolistAC,
+    changeTodolistEntityStatusAC,
+    changeTodolistFilterAC,
+    changeTodolistTitleAC,
+    deleteTodolistAC,
     FilterValuesType,
-    deleteTodolistAC, setTodolistAC,
+    setTodolistAC,
     TodoListDomainType,
-    todoListReducer, changeTodolistEntityStatusAC, clearTodosDataAC
+    todoListReducer
 } from "./todolist-reducer";
 import {RequestStatusType} from "app/app-reducer";
+import {logoutTC} from "../Login/auth-reducer";
 
 
 let todolistId1: string;
@@ -86,7 +91,7 @@ test('correct todolist should change its entityStatus', () => {
 
 test('the state must be set to empty []', () => {
 
-    const endState = todoListReducer(startState, clearTodosDataAC());
+    const endState = todoListReducer(startState,  logoutTC.fulfilled(undefined, 'requestId', undefined ));
 
     expect(endState).toStrictEqual([])
 })

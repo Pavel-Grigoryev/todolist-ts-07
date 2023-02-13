@@ -5,6 +5,7 @@ import {handleServerAppError, handleServerNetworkError} from "utils/error-utils"
 import {AxiosError} from "axios";
 import {setTasksTC} from "./tasks-reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {logoutTC} from "../Login/auth-reducer";
 
 let initialState: Array<TodoListDomainType> = []
 
@@ -44,10 +45,12 @@ const slice = createSlice({
         },
         setTodolistAC(state, action: PayloadAction<{ todolists: Array<TodoListType> }>) {
             return action.payload.todolists.map(tl => ({...tl, filter: "all", entityStatus: "idle"}));
-        },
-        clearTodosDataAC() {
-            return []
         }
+    },
+    extraReducers: builder => {
+        builder.addCase(logoutTC.fulfilled, () => {
+            return [];
+        })
     }
 })
 
@@ -61,8 +64,7 @@ export const {
     changeTodolistFilterAC,
     changeTodolistTitleAC,
     changeTodolistEntityStatusAC,
-    setTodolistAC,
-    clearTodosDataAC
+    setTodolistAC
 } = slice.actions
 
 //Thunks
@@ -150,7 +152,7 @@ export const todolistThunks = {
     changeTodolistTitleAC,
     changeTodolistEntityStatusAC,
     setTodolistAC,
-    clearTodosDataAC, getTodolistsTC, deleteTodolistTC, addTodolistTC, updateTodolistTC
+    getTodolistsTC, deleteTodolistTC, addTodolistTC, updateTodolistTC
 }
 
 //Types
@@ -161,7 +163,6 @@ type ChangeTodolistFilterAT = ReturnType<typeof changeTodolistFilterAC>;
 type ChangeTodolistTitleAT = ReturnType<typeof changeTodolistTitleAC>;
 export type SetTodolistAT = ReturnType<typeof setTodolistAC>;
 export type ChangeTodolistEntityStatusAT = ReturnType<typeof changeTodolistEntityStatusAC>;
-export type ClearTodosDataAT = ReturnType<typeof clearTodosDataAC>;
 
 
 export type TodolistActionsType =
@@ -170,8 +171,8 @@ export type TodolistActionsType =
     | ChangeTodolistFilterAT
     | ChangeTodolistTitleAT
     | SetTodolistAT
-    | ChangeTodolistEntityStatusAT
-    | ClearTodosDataAT;
+    | ChangeTodolistEntityStatusAT;
+
 
 export type TodoListDomainType = TodoListType & {
     filter: FilterValuesType

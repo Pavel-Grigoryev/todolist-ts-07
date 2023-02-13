@@ -40,6 +40,7 @@ export const {setAppStatusAC, setAppErrorAC, setAppInitializedAC} = slice.action
 
 export const initializeAppTC = (): AppThunk => async (dispatch) => {
     dispatch(setAppStatusAC({status: 'loading'}));
+    debugger
     try {
         const res = await authAPI.me();
         if (res.data.resultCode === RESULT_CODE.SUCCESS) {

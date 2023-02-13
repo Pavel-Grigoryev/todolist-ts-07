@@ -29,6 +29,7 @@ export const Todolists = ({demo = false}: TodolistsPropsType) => {
     }, [])
 
     if (!isLoggedIn) {
+        debugger
         return <Navigate to={"/login"}/>
     }
 
