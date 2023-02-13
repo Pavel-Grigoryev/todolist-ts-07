@@ -34,7 +34,6 @@ export const Login = () => {
         onSubmit: async (values, formikHelpers) => {
             const action = await dispatch(loginTC(values));
             if (loginTC.rejected.match(action)) {
-                debugger
                 if (action.payload?.fieldsErrors?.length) {
                     const error = action.payload.fieldsErrors[0]
                     debugger
