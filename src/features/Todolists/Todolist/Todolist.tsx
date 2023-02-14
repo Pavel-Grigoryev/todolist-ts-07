@@ -25,7 +25,7 @@ export const Todolist = memo(({todolist}: PropsType) => {
     let tasks = objTasks[id];
 
     const addTask = useCallback((title: string) => {
-        addTaskTC(id, title);
+        addTaskTC({todolistId: id, title});
     }, [id])
 
     const removeTodolist = useCallback(() => {

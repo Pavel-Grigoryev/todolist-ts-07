@@ -1,4 +1,11 @@
-import {addTaskAC, removeTaskAC, setTasksAC, tasksReducer, TasksStateType, updateTaskAC,} from "./tasks-reducer";
+import {
+    addTaskTC,
+    deleteTaskTC,
+    setTasksTC,
+    tasksReducer,
+    TasksStateType,
+    updateTaskAC,
+} from "./tasks-reducer";
 import {TaskPriorities, TasksStatuses, TodoListType} from "api/todolist-api";
 import {addTodolistAC, deleteTodolistAC, setTodolistAC} from "./todolist-reducer";
 import {logoutTC} from "../Login/auth-reducer";
@@ -88,7 +95,7 @@ beforeEach(() => {
 
 test('correct task should be deleted from correct array', () => {
 
-    const action = removeTaskAC({taskId: '2', todolistId: 'todolistId2'})
+    const action = deleteTaskTC.fulfilled({taskId: '2', todolistId: 'todolistId2'}, 'requestId', {taskId: '2', todolistId: 'todolistId2'} )
 
     const endState = tasksReducer(startState, action)
 
@@ -171,7 +178,7 @@ test('correct task should be added to correct array', () => {
         entityStatus: "idle"
     }
 
-    const action = addTaskAC({task: newTask})
+    const action = addTaskTC.fulfilled({task: newTask}, 'requestId', {todolistId: 'todolistId2', title: 'beer' } )
 
     const endState = tasksReducer(startState, action)
 
@@ -295,7 +302,10 @@ test('tasks should be added in correct todolist', () => {
         },
     ]
 
-    const endState = tasksReducer(startState, setTasksAC({todolistId: 'todolistId2', tasks}))
+    const endState = tasksReducer(startState, setTasksTC.fulfilled({
+        todolistId: 'todolistId2',
+        tasks
+    }, 'requestId', 'todolistId2'))
 
 
     expect(endState['todolistId2'][0].title).toBe('CSS')
@@ -304,7 +314,7 @@ test('tasks should be added in correct todolist', () => {
 
 test('the state must be set to empty {}', () => {
 
-    const endState = tasksReducer({}, logoutTC.fulfilled(undefined, 'requestId', undefined ));
+    const endState = tasksReducer({}, logoutTC.fulfilled(undefined, 'requestId', undefined));
 
     expect(endState).toStrictEqual({})
 })

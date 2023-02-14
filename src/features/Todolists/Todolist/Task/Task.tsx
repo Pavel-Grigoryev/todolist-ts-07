@@ -15,15 +15,19 @@ export const Task = memo((props: TaskPropsType) => {
 
     const onChangeTaskStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
          let status = e.currentTarget.checked ? TasksStatuses.Completed : TasksStatuses.New;
-         updateTaskTC(props.todolistId, props.task.id, {status});
+         updateTaskTC({todolistId: props.todolistId, taskId: props.task.id,
+        model: {status}
+    });
     },[props.task.id]);
 
     const onChangeTaskTitleHandler = useCallback((title: string) => {
-        updateTaskTC(props.todolistId, props.task.id, {title})
+        updateTaskTC({todolistId: props.todolistId, taskId: props.task.id,
+        model: { title }
+    })
     }, [props.task.id,  props.todolistId] );
 
     const removeTaskHandler = () => {
-                deleteTaskTC(props.todolistId, props.task.id);
+                deleteTaskTC({todolistId: props.todolistId, taskId: props.task.id});
     };
 
     return (
