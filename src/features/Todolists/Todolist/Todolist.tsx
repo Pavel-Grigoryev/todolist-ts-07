@@ -33,7 +33,7 @@ export const Todolist = memo(({todolist}: PropsType) => {
     }, [id])
 
     const changeTodolistTitle = useCallback((title: string) => {
-        updateTodolistTC(id, title);
+        updateTodolistTC({id, title});
     }, [id]);
 
     const onAllClickHandler = useCallback(() => changeTodolistFilterAC({filter: "all", id}), [id]);

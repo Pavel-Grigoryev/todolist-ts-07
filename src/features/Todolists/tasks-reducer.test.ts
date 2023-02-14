@@ -7,7 +7,7 @@ import {
     updateTaskAC,
 } from "./tasks-reducer";
 import {TaskPriorities, TasksStatuses, TodoListType} from "api/todolist-api";
-import {addTodolistAC, deleteTodolistAC, setTodolistAC} from "./todolist-reducer";
+import {addTodolistTC, deleteTodolistTC, getTodolistsTC} from "./todolist-reducer";
 import {logoutTC} from "../Login/auth-reducer";
 
 let startState: TasksStateType;
@@ -237,7 +237,7 @@ test('title of specified task should be changed', () => {
 
 test('new array should be added when new todolist is added', () => {
 
-    const action = addTodolistAC({todolist: {id: 'todolistId3', title: "New", addedDate: "", order: 0}})
+    const action = addTodolistTC.fulfilled({todolist: {id: 'todolistId3', title: "New", addedDate: "", order: 0}}, 'requestId', 'New')
 
     const endState = tasksReducer(startState, action)
 
@@ -254,7 +254,7 @@ test('new array should be added when new todolist is added', () => {
 
 test('property with todolistId should be deleted', () => {
 
-    const action = deleteTodolistAC({todolistId: 'todolistId2'})
+    const action = deleteTodolistTC.fulfilled({todolistId: 'todolistId2'}, 'requestId', 'todolistId2')
 
     const endState = tasksReducer(startState, action)
 
@@ -267,7 +267,7 @@ test('property with todolistId should be deleted', () => {
 
 test('property [todolistId]: [] should be added in the taskState', () => {
 
-    const endState = tasksReducer({}, setTodolistAC({todolists: startTodolists}))
+    const endState = tasksReducer({}, getTodolistsTC.fulfilled(startTodolists, 'requestId', undefined))
 
     const keys = Object.keys(endState)
 
