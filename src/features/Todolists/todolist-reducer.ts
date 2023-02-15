@@ -1,10 +1,11 @@
 import {todolistAPI, TodoListType} from "api/todolist-api";
-import {RequestStatusType, setAppStatusAC} from "app/app-reducer";
+import {RequestStatusType} from "app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
 import axios, {AxiosError} from "axios";
 import {setTasksTC} from "./tasks-reducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {logoutTC} from "../Login/auth-reducer";
+import {logoutTC} from "../Auth/auth-reducer";
+import { appActions } from "app";
 
 //Thunks
 
@@ -12,10 +13,10 @@ export const getTodolistsTC = createAsyncThunk('todolists/getTodolistsTC', async
         dispatch,
         rejectWithValue
     }) => {
-        dispatch(setAppStatusAC({status: "loading"}));
+        dispatch(appActions.setAppStatusAC({status: "loading"}));
         try {
             const res = await todolistAPI.getTodolist()
-            dispatch(setAppStatusAC({status: "succeeded"}));
+            dispatch(appActions.setAppStatusAC({status: "succeeded"}));
             const todolists = res.data;
             const setTasks = (todolists: Array<TodoListType>) => {
                 todolists.forEach(tl => {
@@ -38,13 +39,13 @@ export const deleteTodolistTC = createAsyncThunk('todolists/deleteTodolistTC', a
     dispatch,
     rejectWithValue
 }) => {
-    dispatch(setAppStatusAC({status: "loading"}));
-    dispatch(changeTodolistEntityStatusAC({id, entityStatus: "loading"}));
+    dispatch(appActions.setAppStatusAC({status: "loading"}));
+    dispatch(todolistsSlice.changeTodolistEntityStatusAC({id, entityStatus: "loading"}));
     try {
         const res = await todolistAPI.deleteTodolist(id)
 
         if (res.data.resultCode === RESULT_CODE.SUCCESS) {
-            dispatch(setAppStatusAC({status: "succeeded"}));
+            dispatch(appActions.setAppStatusAC({status: "succeeded"}));
             return {todolistId: id}
         } else {
             handleServerAppError(res.data, dispatch);
@@ -56,7 +57,7 @@ export const deleteTodolistTC = createAsyncThunk('todolists/deleteTodolistTC', a
         }
         return rejectWithValue(null);
     } finally {
-        dispatch(changeTodolistEntityStatusAC({id, entityStatus: "failed"}));
+        dispatch(todolistsSlice.changeTodolistEntityStatusAC({id, entityStatus: "failed"}));
     }
 })
 
@@ -64,11 +65,11 @@ export const addTodolistTC = createAsyncThunk('todolists/addTodolistTC', async (
     dispatch,
     rejectWithValue
 }) => {
-    dispatch(setAppStatusAC({status: "loading"}));
+    dispatch(appActions.setAppStatusAC({status: "loading"}));
     try {
         const res = await todolistAPI.addTodolist(title)
         if (res.data.resultCode === RESULT_CODE.SUCCESS) {
-            dispatch(setAppStatusAC({status: "succeeded"}));
+            dispatch(appActions.setAppStatusAC({status: "succeeded"}));
             return {todolist: res.data.data.item}
         } else {
             handleServerAppError(res.data, dispatch);
@@ -87,12 +88,12 @@ export const updateTodolistTC = createAsyncThunk('todolists/updateTodolistTC', a
     dispatch,
     rejectWithValue
 }) => {
-    dispatch(setAppStatusAC({status: "loading"}));
-    dispatch(changeTodolistEntityStatusAC({id: param.id, entityStatus: "loading"}));
+    dispatch(appActions.setAppStatusAC({status: "loading"}));
+    dispatch(todolistsSlice.changeTodolistEntityStatusAC({id: param.id, entityStatus: "loading"}));
     try {
         const res = await todolistAPI.updateTodolist(param.id, param.title)
         if (res.data.resultCode === RESULT_CODE.SUCCESS) {
-            dispatch(setAppStatusAC({status: "succeeded"}));
+            dispatch(appActions.setAppStatusAC({status: "succeeded"}));
             return {title: param.title, id: param.id}
         } else {
             handleServerAppError(res.data, dispatch);
@@ -104,7 +105,7 @@ export const updateTodolistTC = createAsyncThunk('todolists/updateTodolistTC', a
         }
         return rejectWithValue(null);
     } finally {
-        dispatch(changeTodolistEntityStatusAC({id: param.id, entityStatus: "failed"}));
+        dispatch(todolistsSlice.changeTodolistEntityStatusAC({id: param.id, entityStatus: "failed"}));
     }
 
 })
@@ -154,18 +155,13 @@ const slice = createSlice({
     }
 })
 
-export const todoListReducer = slice.reducer
+export const todolistReducer = slice.reducer
 
 // Actions
 
-export const {
-    changeTodolistFilterAC,
-    changeTodolistEntityStatusAC
-} = slice.actions
+export const todolistsSlice = slice.actions
 
-export const todolistThunks = {
-    changeTodolistFilterAC,
-    changeTodolistEntityStatusAC,
+export const asyncTodolistActions = {
     getTodolistsTC, deleteTodolistTC, addTodolistTC, updateTodolistTC
 }
 

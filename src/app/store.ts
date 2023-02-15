@@ -1,16 +1,16 @@
 import {AnyAction, combineReducers} from "redux";
 import thunkMiddleware, {ThunkAction, ThunkDispatch} from "redux-thunk";
-import {todoListReducer} from "features/Todolists/todolist-reducer";
+import {todolistReducer} from "features/Todolists/todolist-reducer";
 import {tasksReducer} from "features/Todolists/tasks-reducer";
 import {appReducer} from "./app-reducer";
-import {authReducer} from "features/Login/auth-reducer";
+import {authReducer} from "features/Auth/auth-reducer";
 import {configureStore} from "@reduxjs/toolkit";
 import logger from 'redux-logger'
 
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
-    todolists: todoListReducer,
+    todolists: todolistReducer,
     app: appReducer,
     auth: authReducer
 })

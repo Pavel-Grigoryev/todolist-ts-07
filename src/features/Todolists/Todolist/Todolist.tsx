@@ -7,19 +7,22 @@ import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import {Task} from "./Task/Task";
-import {FilterValuesType, TodoListDomainType, todolistThunks} from "../todolist-reducer";
+import {FilterValuesType, TodoListDomainType} from "../todolist-reducer";
 import {TasksStatuses} from "api/todolist-api";
-import {TasksStateType, tasksThunks} from "../tasks-reducer";
+import {asyncTasksActions, TasksStateType} from "../tasks-reducer";
 import {useActions} from "hooks/useActions";
 import {useAppSelector} from "hooks/useAppSelector";
+import {todolistActions} from "../index";
 
 
 export const Todolist = memo(({todolist}: PropsType) => {
 
     const {id, filter, title, entityStatus} = todolist;
 
-    const {addTaskTC} = useActions(tasksThunks)
-    const {deleteTodolistTC, updateTodolistTC, changeTodolistFilterAC} = useActions(todolistThunks)
+    const {addTaskTC} = useActions(asyncTasksActions)
+    const {deleteTodolistTC, updateTodolistTC, changeTodolistFilterAC} = useActions(todolistActions)
+
+
 
     const objTasks = useAppSelector<TasksStateType>(state => state.tasks);
     let tasks = objTasks[id];

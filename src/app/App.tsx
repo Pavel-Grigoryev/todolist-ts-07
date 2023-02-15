@@ -6,28 +6,28 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import {Menu} from "@mui/icons-material";
-import {Todolists} from "features/Todolists/Todolists";
+import {Todolists} from "features/Todolists";
 import LinearProgress from "@mui/material/LinearProgress";
-import {appThunks, RequestStatusType} from "./app-reducer";
+import {asyncAppActions} from "./app-reducer";
 import Container from "@mui/material/Container";
 import {Navigate, Route, Routes} from "react-router-dom";
-import {Login} from "features/Login/Login";
+import {Login} from "features/Auth/Login";
 import CircularProgress from "@mui/material/CircularProgress";
-import {authThunks} from "features/Login/auth-reducer";
+import {authThunks} from "features/Auth/auth-reducer";
 import {ErrorSnackbar} from "components/ErrorSnackbar";
-import {useActions} from "../hooks/useActions";
-import {useAppSelector} from "../hooks/useAppSelector";
+import {useActions} from "hooks/useActions";
+import {useAppSelector} from "hooks/useAppSelector";
+import {authSelectors} from "features/Auth";
+import {selectIsInitialized, selectStatus} from "./app-selectors";
 
 
 export function App({demo = false}: AppPropsType) {
 
-    const status = useAppSelector<RequestStatusType>(state => state.app.status);
+    const status = useAppSelector(selectStatus);
+    const isInitialized = useAppSelector(selectIsInitialized);
+    const isLoggedIn = useAppSelector(authSelectors.selectIsLoggedIn);
 
-    const isInitialized = useAppSelector<boolean>(state => state.app.isInitialized);
-
-    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn);
-
-    const {initializeAppTC} = useActions(appThunks);
+    const {initializeAppTC} = useActions(asyncAppActions);
     const {logoutTC} = useActions(authThunks);
 
     useEffect(() => {

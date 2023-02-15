@@ -2,18 +2,18 @@ import {authAPI} from "../api/todolist-api";
 import {RESULT_CODE} from "../features/Todolists/todolist-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import axios, {AxiosError} from "axios";
-import {setIsLoggedInAC} from "../features/Login/auth-reducer";
+import {setIsLoggedInAC} from "../features/Auth/auth-reducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 //Thunks
 
 export const initializeAppTC = createAsyncThunk('app/initializeAppTC', async (param, {dispatch}) => {
-        dispatch(setAppStatusAC({status: 'loading'}));
+        dispatch(appSlice.setAppStatusAC({status: 'loading'}));
         try {
             const res = await authAPI.me();
             if (res.data.resultCode === RESULT_CODE.SUCCESS) {
                 dispatch(setIsLoggedInAC({isLoggedIn: true}));
-                dispatch(setAppStatusAC({status: "succeeded"}));
+                dispatch(appSlice.setAppStatusAC({status: "succeeded"}));
             } else {
                 handleServerAppError(res.data, dispatch);
             }
@@ -51,9 +51,9 @@ export const appReducer = slice.reducer;
 
 // actions
 
-export const {setAppStatusAC, setAppErrorAC} = slice.actions;
+export const appSlice = slice.actions;
 
-export const appThunks = {setAppStatusAC, setAppErrorAC, initializeAppTC}
+export const asyncAppActions = {initializeAppTC}
 
 
 //Types

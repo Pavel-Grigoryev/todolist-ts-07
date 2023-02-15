@@ -5,16 +5,16 @@ import {Provider} from "react-redux";
 import {v1} from "uuid";
 import {TaskPriorities, TasksStatuses} from "api/todolist-api";
 import {tasksReducer} from "features/Todolists/tasks-reducer";
-import {todoListReducer} from "features/Todolists/todolist-reducer";
+import {todolistReducer} from "features/Todolists/todolist-reducer";
 import {appReducer} from "./app-reducer";
 import thunkMiddleware from "redux-thunk";
-import {authReducer} from "features/Login/auth-reducer";
+import {authReducer} from "features/Auth/auth-reducer";
 import {HashRouter} from "react-router-dom";
 import {configureStore} from "@reduxjs/toolkit";
 
 const rootReducer: RootReducerType = combineReducers({
     tasks: tasksReducer,
-    todolists: todoListReducer,
+    todolists: todolistReducer,
     app: appReducer,
     auth: authReducer
 })

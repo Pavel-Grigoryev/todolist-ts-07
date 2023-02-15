@@ -1,11 +1,12 @@
 import {addTodolistTC, deleteTodolistTC, getTodolistsTC, RESULT_CODE} from "./todolist-reducer";
 import {TaskPayloadType, TaskType, todolistAPI} from "api/todolist-api";
 import {AppRootStateType} from "app/store";
-import {RequestStatusType, setAppStatusAC} from "app/app-reducer";
+import {RequestStatusType} from "app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
 import axios, {AxiosError} from "axios";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {logoutTC} from "../Login/auth-reducer";
+import {logoutTC} from "../Auth/auth-reducer";
+import {appActions} from "app";
 
 //Thunks
 
@@ -13,10 +14,10 @@ export const setTasksTC = createAsyncThunk('tasks/setTasksTC', async (todolistId
     dispatch,
     rejectWithValue
 }) => {
-    dispatch(setAppStatusAC({status: "loading"}));
+    dispatch(appActions.setAppStatusAC({status: "loading"}));
     try {
         const res = await todolistAPI.getTasks(todolistId);
-        dispatch(setAppStatusAC({status: "succeeded"}));
+        dispatch(appActions.setAppStatusAC({status: "succeeded"}));
         return {todolistId, tasks: res.data.items}
     } catch (e) {
         if (axios.isAxiosError<AxiosError<{ message: string }>>(e)) {
@@ -30,11 +31,11 @@ export const addTaskTC = createAsyncThunk('tasks/addTaskTC', async (param: { tod
     dispatch,
     rejectWithValue
 }) => {
-    dispatch(setAppStatusAC({status: "loading"}));
+    dispatch(appActions.setAppStatusAC({status: "loading"}));
     try {
         const res = await todolistAPI.addTask(param.todolistId, param.title)
         if (res.data.resultCode === RESULT_CODE.SUCCESS) {
-            dispatch(setAppStatusAC({status: "succeeded"}));
+            dispatch(appActions.setAppStatusAC({status: "succeeded"}));
             return {task: res.data.data.item}
 
         } else {
@@ -50,8 +51,8 @@ export const addTaskTC = createAsyncThunk('tasks/addTaskTC', async (param: { tod
 })
 
 export const deleteTaskTC = createAsyncThunk('tasks/deleteTaskTC', (param: {todolistId: string, taskId: string}, {dispatch, rejectWithValue}) => {
-    dispatch(setAppStatusAC({status: "loading"}));
-    dispatch(updateTaskAC({
+    dispatch(appActions.setAppStatusAC({status: "loading"}));
+    dispatch(tasksSlice.updateTaskAC({
         todolistId: param.todolistId, taskId: param.taskId, model: {
             entityStatus: "loading"
         }
@@ -59,7 +60,7 @@ export const deleteTaskTC = createAsyncThunk('tasks/deleteTaskTC', (param: {todo
     try {
         debugger
         const res = todolistAPI.deleteTask(param.todolistId, param.taskId);
-        dispatch(setAppStatusAC({status: "succeeded"}));
+        dispatch(appActions.setAppStatusAC({status: "succeeded"}));
        return {taskId: param.taskId, todolistId: param.todolistId}
     } catch (e) {
         if (axios.isAxiosError<AxiosError<{ message: string }>>(e)) {
@@ -68,7 +69,7 @@ export const deleteTaskTC = createAsyncThunk('tasks/deleteTaskTC', (param: {todo
         }
         return rejectWithValue(null);
     } finally {
-        dispatch(updateTaskAC({
+        dispatch(tasksSlice.updateTaskAC({
             todolistId: param.todolistId, taskId: param.taskId, model: {
                 entityStatus: "failed"
             }
@@ -77,13 +78,13 @@ export const deleteTaskTC = createAsyncThunk('tasks/deleteTaskTC', (param: {todo
 })
 
 export const updateTaskTC = createAsyncThunk('tasks/updateTaskTC', async (param: {todolistId: string, taskId: string, model: TaskPayloadUpdateType}, {dispatch, rejectWithValue, getState}) => {
-    dispatch(updateTaskAC({
+    dispatch(tasksSlice.updateTaskAC({
         todolistId: param.todolistId, taskId: param.taskId, model:
             {
                 entityStatus: "loading"
             }
     }));
-    dispatch(setAppStatusAC({status: "loading"}));
+    dispatch(appActions.setAppStatusAC({status: "loading"}));
     try {
         const state = getState() as AppRootStateType
         const task = state.tasks[param.todolistId].find(t => t.id === param.taskId);
@@ -101,7 +102,7 @@ export const updateTaskTC = createAsyncThunk('tasks/updateTaskTC', async (param:
                 ...param.model
             }
             const res = await todolistAPI.updateTask(param.todolistId, param.taskId, newModel);
-            dispatch(setAppStatusAC({status: "succeeded"}));
+            dispatch(appActions.setAppStatusAC({status: "succeeded"}));
 
             return param
         }
@@ -112,7 +113,7 @@ export const updateTaskTC = createAsyncThunk('tasks/updateTaskTC', async (param:
         }
         return rejectWithValue(null);
     } finally {
-        dispatch(updateTaskAC({
+        dispatch(tasksSlice.updateTaskAC({
             todolistId: param.todolistId, taskId: param.taskId, model:
                 {
                     entityStatus: "failed"
@@ -121,7 +122,7 @@ export const updateTaskTC = createAsyncThunk('tasks/updateTaskTC', async (param:
     }
 })
 
-const slice = createSlice({
+export const slice = createSlice({
     name: 'tasks',
     initialState: {} as TasksStateType,
     reducers: {
@@ -174,13 +175,10 @@ export const tasksReducer = slice.reducer
 
 //Actions
 
-export const {updateTaskAC} = slice.actions
+export const tasksSlice = slice.actions
 
 
-
-
-
-export const tasksThunks = {addTaskTC, deleteTaskTC, updateTaskTC, updateTaskAC}
+export const asyncTasksActions = {addTaskTC, deleteTaskTC, updateTaskTC}
 
 //Types
 

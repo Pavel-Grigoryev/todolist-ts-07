@@ -1,10 +1,10 @@
-import {setAppStatusAC} from 'app/app-reducer'
+
 import {authAPI, AuthDataType, FieldErrorType} from "api/todolist-api";
 import {RESULT_CODE} from "../Todolists/todolist-reducer";
 import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
 import axios, {AxiosError} from "axios";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-
+import {appActions} from "app";
 
 // thunks
 
@@ -12,11 +12,11 @@ export const loginTC = createAsyncThunk<undefined, AuthDataType, { rejectValue: 
     dispatch,
     rejectWithValue
 }) => {
-    dispatch(setAppStatusAC({status: 'loading'}));
+    dispatch(appActions.setAppStatusAC({status: 'loading'}));
     try {
         const res = await authAPI.login(param);
         if (res.data.resultCode === RESULT_CODE.SUCCESS) {
-            dispatch(setAppStatusAC({status: 'succeeded'}));
+            dispatch(appActions.setAppStatusAC({status: 'succeeded'}));
         } else {
             handleServerAppError(res.data, dispatch);
             return rejectWithValue({errors: res.data.messages, fieldsErrors: res.data.fieldsErrors})
@@ -30,11 +30,11 @@ export const loginTC = createAsyncThunk<undefined, AuthDataType, { rejectValue: 
 })
 
 export const logoutTC = createAsyncThunk('auth/logoutTC', async (param, {dispatch, rejectWithValue}) => {
-    dispatch(setAppStatusAC({status: 'loading'}));
+    dispatch(appActions.setAppStatusAC({status: 'loading'}));
     try {
         const res = await authAPI.logout()
         if (res.data.resultCode === RESULT_CODE.SUCCESS) {
-            dispatch(setAppStatusAC({status: 'succeeded'}));
+            dispatch(appActions.setAppStatusAC({status: 'succeeded'}));
         } else {
             handleServerAppError(res.data, dispatch);
             return rejectWithValue({errors: res.data.messages, fieldsErrors: res.data.fieldsErrors})

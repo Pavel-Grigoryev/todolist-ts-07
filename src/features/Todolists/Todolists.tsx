@@ -1,20 +1,25 @@
 import React, {useCallback, useEffect} from "react";
-import {TodoListDomainType, todolistThunks} from "./todolist-reducer";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import {AddItemForm} from "components/AddItemForm";
-import {Todolist} from "./Todolist/Todolist";
+import {Todolist} from "./Todolist";
 import {Navigate} from "react-router-dom";
 import {useActions} from "hooks/useActions";
 import {useAppSelector} from "hooks/useAppSelector";
+import {todolistActions, todolistSelectors} from "./index";
+import {authSelectors} from "../Auth";
+
+type TodolistsPropsType = {
+    demo?: boolean
+}
 
 export const Todolists = ({demo = false}: TodolistsPropsType) => {
 
-    const {getTodolistsTC, addTodolistTC} = useActions(todolistThunks)
+    const {getTodolistsTC, addTodolistTC} = useActions(todolistActions)
 
-    const todolists = useAppSelector<Array<TodoListDomainType>>(state => state.todolists);
+    const todolists = useAppSelector(todolistSelectors.selectTodolists);
 
-    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn);
+    const isLoggedIn = useAppSelector(authSelectors.selectIsLoggedIn);
 
     useEffect(() => {
         if (demo || !isLoggedIn) {
@@ -60,8 +65,4 @@ export const Todolists = ({demo = false}: TodolistsPropsType) => {
     )
 }
 
-//Types
 
-type TodolistsPropsType = {
-    demo?: boolean
-}

@@ -12,13 +12,14 @@ import * as Yup from 'yup';
 import {loginTC} from "./auth-reducer";
 import {Navigate} from "react-router-dom";
 import {useAppSelector} from "hooks/useAppSelector";
-import {useAppDispatch} from "../../hooks/useAppDispatch";
+import {useAppDispatch} from "hooks/useAppDispatch";
+import {selectIsLoggedIn} from "./auth-selectors";
 
 export const Login = () => {
 
     const dispatch = useAppDispatch()
 
-    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn);
+    const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
 
     const formik = useFormik({

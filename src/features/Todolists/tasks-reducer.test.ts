@@ -4,11 +4,11 @@ import {
     setTasksTC,
     tasksReducer,
     TasksStateType,
-    updateTaskAC,
+    tasksSlice,
 } from "./tasks-reducer";
 import {TaskPriorities, TasksStatuses, TodoListType} from "api/todolist-api";
 import {addTodolistTC, deleteTodolistTC, getTodolistsTC} from "./todolist-reducer";
-import {logoutTC} from "../Login/auth-reducer";
+import {logoutTC} from "../Auth/auth-reducer";
 
 let startState: TasksStateType;
 let startTodolists: Array<TodoListType>;
@@ -191,7 +191,7 @@ test('correct task should be added to correct array', () => {
 
 test('entityStatus of specified task should be changed', () => {
 
-    const action = updateTaskAC({
+    const action = tasksSlice.updateTaskAC({
         todolistId: 'todolistId2', taskId: '2', model:
             {
                 entityStatus: "loading"
@@ -206,7 +206,7 @@ test('entityStatus of specified task should be changed', () => {
 
 test('status of specified task should be changed', () => {
 
-    const action = updateTaskAC({
+    const action = tasksSlice.updateTaskAC({
         todolistId: 'todolistId2', taskId: '2', model:
             {
                 status: TasksStatuses.New
@@ -222,7 +222,7 @@ test('status of specified task should be changed', () => {
 
 test('title of specified task should be changed', () => {
 
-    const action = updateTaskAC({
+    const action = tasksSlice.updateTaskAC({
         todolistId: 'todolistId2', taskId: '2', model:
             {
                 title: 'beer'

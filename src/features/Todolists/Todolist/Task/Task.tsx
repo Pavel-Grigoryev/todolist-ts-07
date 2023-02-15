@@ -4,14 +4,14 @@ import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import {TaskDomainType, tasksThunks} from "features/Todolists/tasks-reducer";
+import {TaskDomainType, asyncTasksActions} from "features/Todolists/tasks-reducer";
 import {TasksStatuses} from "api/todolist-api";
 import {EditableSpan} from "components/EditableSpan";
 import {useActions} from "hooks/useActions";
 
 export const Task = memo((props: TaskPropsType) => {
 
-    const {deleteTaskTC, updateTaskTC} = useActions(tasksThunks)
+    const {deleteTaskTC, updateTaskTC} = useActions(asyncTasksActions)
 
     const onChangeTaskStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
          let status = e.currentTarget.checked ? TasksStatuses.Completed : TasksStatuses.New;
