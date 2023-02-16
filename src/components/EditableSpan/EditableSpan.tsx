@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 type EditableSpanPropsType = {
     value: string
     onChange: (newValue: string) => void
+    spanStyle?: StylesType
 }
 
 export const EditableSpan = memo((props: EditableSpanPropsType) => {
@@ -29,5 +30,11 @@ export const EditableSpan = memo((props: EditableSpanPropsType) => {
                      value={title}
                      autoFocus onBlur={activateViewMode} onChange={onChangeSetLocalTitle}
         />
-        : <span onDoubleClick={activateEditMode}>{props.value}</span>
+        : <span onDoubleClick={activateEditMode} style={props.spanStyle}>{props.value}</span>
 });
+
+//Types
+
+type StylesType = {
+    flexGrow?: string
+}

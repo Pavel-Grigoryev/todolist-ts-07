@@ -9,26 +9,36 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import {Task} from "./Task/Task";
 import {FilterValuesType, TodoListDomainType} from "../todolist-reducer";
 import {TasksStatuses} from "api/todolist-api";
-import {asyncTasksActions, TasksStateType} from "../tasks-reducer";
+import {TasksStateType} from "../tasks-reducer";
 import {useActions} from "hooks/useActions";
 import {useAppSelector} from "hooks/useAppSelector";
-import {todolistActions} from "../index";
+import {tasksActions, tasksSelectors, todolistActions} from "../index";
+import {useAppDispatch} from "hooks/useAppDispatch";
 
 
 export const Todolist = memo(({todolist}: PropsType) => {
 
     const {id, filter, title, entityStatus} = todolist;
 
-    const {addTaskTC} = useActions(asyncTasksActions)
+
     const {deleteTodolistTC, updateTodolistTC, changeTodolistFilterAC} = useActions(todolistActions)
+    const dispatch = useAppDispatch()
 
 
-
-    const objTasks = useAppSelector<TasksStateType>(state => state.tasks);
+    const objTasks = useAppSelector<TasksStateType>(tasksSelectors.selectorObjTasks);
     let tasks = objTasks[id];
 
-    const addTask = useCallback((title: string) => {
-        addTaskTC({todolistId: id, title});
+    const addTask = useCallback(async (title: string) => {
+        const resultAction = await dispatch(tasksActions.addTaskTC({todolistId: id, title}));
+        if (tasksActions.addTaskTC.rejected.match(resultAction)) {
+            if (resultAction.payload?.errors?.length) {
+                const errorMessage = resultAction.payload.errors[0]
+                throw new Error(errorMessage)
+            } else {
+                throw new Error('Some error occurred')
+            }
+        }
+
     }, [id])
 
     const removeTodolist = useCallback(() => {
@@ -59,14 +69,15 @@ export const Todolist = memo(({todolist}: PropsType) => {
         return tasks
     }
 
-    return <div style={{textAlign: 'center'}}>
-        <Typography variant={"h5"} style={{marginBottom: "10px"}}><EditableSpan value={title}
-                                                                                onChange={changeTodolistTitle}/>
-            <IconButton onClick={removeTodolist} disabled={entityStatus === "loading"}>
-                <DeleteOutlineOutlinedIcon/>
-            </IconButton>
+    return <div style={{textAlign: 'left', position: 'relative'}}>
+        <IconButton onClick={removeTodolist} disabled={entityStatus === "loading"}
+                    style={{position: 'absolute', top: '-5px', right: '0'}}>
+            <DeleteOutlineOutlinedIcon/>
+        </IconButton>
+        <Typography variant={"h5"} style={{marginBottom: "10px", paddingRight: '40px'}}><EditableSpan value={title}
+                                                                                                      onChange={changeTodolistTitle}/>
         </Typography>
-        <AddItemForm addItem={addTask} entityStatus={entityStatus}/>
+        <AddItemForm addItem={addTask} entityStatus={entityStatus} sx={{width: '86%'}}/>
         <List>
             {
                 filterTasks(filter).map(t => {
@@ -76,8 +87,9 @@ export const Todolist = memo(({todolist}: PropsType) => {
                     />
                 })
             }
+            {!tasks.length && <div style={{margin: '0 0 10px 10px', color: 'grey'}}>No tasks</div>}
         </List>
-        <div>
+        <div style={{textAlign: 'center'}}>
             <ButtonWithMemo variant={"contained"}
                             color={filter === 'all' ? "primary" : "secondary"}
                             onclick={onAllClickHandler} title={'All'} marginRight={'10px'}/>

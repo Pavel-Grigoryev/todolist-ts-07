@@ -1,4 +1,4 @@
-import React from 'react';
+ import React from 'react';
 import {ComponentStory, ComponentMeta} from '@storybook/react';
 import {Task} from "../features/Todolists/Todolist/Task/Task";
 import {ReduxStoreProviderDecorator} from "../app/ReduxStoreProviderDecorator";

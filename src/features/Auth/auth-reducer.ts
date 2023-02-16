@@ -72,10 +72,10 @@ export const authReducer = slice.reducer
 
 // actions
 
-export const {setIsLoggedInAC} = slice.actions
+export const authSlice = slice.actions
 
 
-export const authThunks = {logoutTC, loginTC, setIsLoggedInAC}
+export const asyncAuthActions = {logoutTC, loginTC}
 
 // types
 

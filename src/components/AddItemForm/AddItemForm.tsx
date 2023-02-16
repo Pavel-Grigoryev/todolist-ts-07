@@ -4,14 +4,25 @@ import IconButton from "@mui/material/IconButton";
 import AddIcon from '@mui/icons-material/Add';
 import {RequestStatusType} from "app/app-reducer";
 
+type AddItemFormPropsType = {
+    addItem: (title: string) => Promise<any>
+    entityStatus?: RequestStatusType
+    sx?: StylesType
+}
+
 export const AddItemForm = memo((props: AddItemFormPropsType) => {
     let [title, setTitle] = useState("")
     let [error, setError] = useState<string | null>(null)
 
-    const addItem = () => {
+    const addItem = async () => {
         if (title.trim() !== "") {
-            props.addItem(title);
-            setTitle("");
+            try {
+                await props.addItem(title);
+                setTitle("");
+                setError(null)
+            } catch (e: any) {
+                setError(e.message)
+            }
         } else {
             setError("Title is required");
         }
@@ -39,8 +50,9 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
                    onChange={onChangeHandler}
                    onKeyPress={onKeyPressHandler}
                    error={!!error}
-                   helperText={error && 'Title is required'}
+                   helperText={error}
                    disabled={props.entityStatus === "loading"}
+                   sx={props.sx}
         />
 
         <IconButton onClick={addItem} disabled={props.entityStatus === "loading"}>
@@ -50,10 +62,10 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
     </div>
 })
 
-
 //Types
 
-type AddItemFormPropsType = {
-    addItem: (title: string) => void
-    entityStatus?: RequestStatusType
+type StylesType = {
+    width?: string
 }
+
+

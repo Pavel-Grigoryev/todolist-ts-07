@@ -17,16 +17,20 @@ export default {
 
 } as ComponentMeta<typeof AddItemForm>;
 
+const asyncCallback = async (...params: any[]) => {
+    action('Button clicked')(...params)
+}
+
 const Template: ComponentStory<typeof AddItemForm> = (args) => <AddItemForm {...args} />;
 
 export const AddItemFormBaseExample = Template.bind({});
 AddItemFormBaseExample.args = {
- addItem: action('Button clicked')
+ addItem: asyncCallback
 };
 
 export const AddItemFormDisabledExample = Template.bind({});
 AddItemFormDisabledExample.args = {
-    addItem: action('Button clicked'),
+    addItem: asyncCallback,
     entityStatus: "loading"
 };
 
@@ -76,5 +80,5 @@ export const TemplateError: ComponentStory<typeof AddItemForm> = ()=> {
 }
 
 TemplateError.args = {
-  addItem: action('Button clicked')
+  addItem: asyncCallback
 };

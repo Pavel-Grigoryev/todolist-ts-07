@@ -29,7 +29,7 @@ export const Todolists = ({demo = false}: TodolistsPropsType) => {
         }
     }, [])
 
-    const addTodolist = useCallback((title: string) => {
+    const addTodolist = useCallback(async (title: string) => {
         addTodolistTC(title);
     }, [])
 
@@ -40,15 +40,15 @@ export const Todolists = ({demo = false}: TodolistsPropsType) => {
     return (
         <>
             <Grid container style={{margin: "30px 0"}}>
-                <AddItemForm addItem={addTodolist}/>
+                <AddItemForm addItem={addTodolist} />
             </Grid>
-            <Grid container spacing={5}>
+            <Grid container spacing={5} style={{flexWrap: 'nowrap', overflowX: 'scroll', marginLeft: '-20px'}}>
                 {
                     todolists.map(tl => {
 
                         return (
-                            <Grid item key={tl.id}>
-                                <Paper style={{width: "300px", padding: '20px'}}
+                            <Grid item key={tl.id} style={{padding: '60px 20px 40px'}}>
+                                <Paper style={{width: "300px", padding: '20px', wordBreak: 'break-word'}}
                                        elevation={8}
                                 >
                                     <Todolist

@@ -13,7 +13,7 @@ import Container from "@mui/material/Container";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "features/Auth/Login";
 import CircularProgress from "@mui/material/CircularProgress";
-import {authThunks} from "features/Auth/auth-reducer";
+import {asyncAuthActions} from "features/Auth/auth-reducer";
 import {ErrorSnackbar} from "components/ErrorSnackbar";
 import {useActions} from "hooks/useActions";
 import {useAppSelector} from "hooks/useAppSelector";
@@ -28,7 +28,7 @@ export function App({demo = false}: AppPropsType) {
     const isLoggedIn = useAppSelector(authSelectors.selectIsLoggedIn);
 
     const {initializeAppTC} = useActions(asyncAppActions);
-    const {logoutTC} = useActions(authThunks);
+    const {logoutTC} = useActions(asyncAuthActions);
 
     useEffect(() => {
         if (demo || isLoggedIn) {

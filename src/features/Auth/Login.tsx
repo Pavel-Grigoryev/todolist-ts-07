@@ -9,11 +9,11 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import {loginTC} from "./auth-reducer";
 import {Navigate} from "react-router-dom";
 import {useAppSelector} from "hooks/useAppSelector";
 import {useAppDispatch} from "hooks/useAppDispatch";
 import {selectIsLoggedIn} from "./auth-selectors";
+import {authActions} from "./index";
 
 export const Login = () => {
 
@@ -33,11 +33,10 @@ export const Login = () => {
             password: Yup.string().required('Required').min(5, 'Must be 5 characters or more')
         }),
         onSubmit: async (values, formikHelpers) => {
-            const action = await dispatch(loginTC(values));
-            if (loginTC.rejected.match(action)) {
-                if (action.payload?.fieldsErrors?.length) {
-                    const error = action.payload.fieldsErrors[0]
-                    debugger
+            const resultAction = await dispatch(authActions.loginTC(values));
+            if (authActions.loginTC.rejected.match(resultAction)) {
+                if (resultAction.payload?.fieldsErrors?.length) {
+                    const error = resultAction.payload.fieldsErrors[0]
                     formikHelpers.setFieldError(error.field, error.error)
                 }
             }
