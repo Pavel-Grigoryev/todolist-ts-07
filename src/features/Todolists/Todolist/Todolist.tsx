@@ -14,6 +14,7 @@ import {useActions} from "hooks/useActions";
 import {useAppSelector} from "hooks/useAppSelector";
 import {tasksActions, tasksSelectors, todolistActions} from "../index";
 import {useAppDispatch} from "hooks/useAppDispatch";
+import {AddItemFormSubmitHelperType} from "../../../components/AddItemForm/AddItemForm";
 
 
 export const Todolist = memo(({todolist}: PropsType) => {
@@ -28,15 +29,18 @@ export const Todolist = memo(({todolist}: PropsType) => {
     const objTasks = useAppSelector<TasksStateType>(tasksSelectors.selectorObjTasks);
     let tasks = objTasks[id];
 
-    const addTask = useCallback(async (title: string) => {
+    const addTask = useCallback(async (title: string, helpers: AddItemFormSubmitHelperType) => {
         const resultAction = await dispatch(tasksActions.addTaskTC({todolistId: id, title}));
         if (tasksActions.addTaskTC.rejected.match(resultAction)) {
             if (resultAction.payload?.errors?.length) {
-                const errorMessage = resultAction.payload.errors[0]
-                throw new Error(errorMessage)
+                const errorMessage = resultAction.payload.errors[0];
+                helpers.setError(errorMessage);
             } else {
-                throw new Error('Some error occurred')
+                helpers.setError('Some error occurred');
             }
+        } else {
+            helpers.setError(null);
+            helpers.setTitle('');
         }
 
     }, [id])

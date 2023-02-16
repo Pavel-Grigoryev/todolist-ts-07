@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import {RequestStatusType} from "app/app-reducer";
 
 type AddItemFormPropsType = {
-    addItem: (title: string) => Promise<any>
+    addItem: (title: string, helpers: AddItemFormSubmitHelperType) => Promise<any>
     entityStatus?: RequestStatusType
     sx?: StylesType
 }
@@ -16,13 +16,7 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
 
     const addItem = async () => {
         if (title.trim() !== "") {
-            try {
-                await props.addItem(title);
-                setTitle("");
-                setError(null)
-            } catch (e: any) {
-                setError(e.message)
-            }
+            props.addItem(title, {setError, setTitle});
         } else {
             setError("Title is required");
         }
@@ -66,6 +60,11 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
 
 type StylesType = {
     width?: string
+}
+
+export type AddItemFormSubmitHelperType = {
+    setError: (errorr: string | null) => void
+    setTitle: (title: string) => void
 }
 
 
