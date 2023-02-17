@@ -4,10 +4,10 @@ import {
     setTasksTC,
     TasksStateType
 } from "./tasks-reducer";
-import {TaskPriorities, TasksStatuses, TodoListType} from "api/todolist-api";
 import {addTodolistTC, deleteTodolistTC, getTodolistsTC} from "./todolist-reducer";
 import {logoutTC} from "../Auth/auth-reducer";
 import {tasksActions, tasksReducer} from "./index";
+import {TaskPriorities, TasksStatuses, TodoListType} from "api/types";
 
 const { updateTaskAC } = tasksActions
 

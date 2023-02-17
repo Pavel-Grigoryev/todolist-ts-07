@@ -1,31 +1,32 @@
-import {authAPI} from "../api/todolist-api";
-import {RESULT_CODE} from "../features/Todolists/todolist-reducer";
-import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
-import axios, {AxiosError} from "axios";
+import {authAPI} from "api/todolist-api";
+import {RESULT_CODE} from "../Todolists/todolist-reducer";
+import {AxiosError} from "axios";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {authActions} from "../features/Auth";
+import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "utils/error-utils";
+import {authCommonActions} from "../CommonActions/Auth";
+
+const {setIsLoggedInAC} = authCommonActions;
 
 //Thunks
 
-export const initializeAppTC = createAsyncThunk('app/initializeAppTC', async (param, {dispatch}) => {
-        dispatch(appSlice.setAppStatusAC({status: 'loading'}));
+export const initializeAppTC = createAsyncThunk('app/initializeAppTC', async (param, thunkAPI) => {
+    thunkAPI.dispatch(setAppStatusAC({status: 'loading'}));
         try {
             const res = await authAPI.me();
             if (res.data.resultCode === RESULT_CODE.SUCCESS) {
-                dispatch(authActions.setIsLoggedInAC({isLoggedIn: true}));
-                dispatch(appSlice.setAppStatusAC({status: "succeeded"}));
+                thunkAPI.dispatch(setIsLoggedInAC({isLoggedIn: true}));
+                thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}));
             } else {
-                handleServerAppError(res.data, dispatch);
+                return handleAsyncServerAppError(res.data, thunkAPI);
             }
-        } catch (e) {
-            if (axios.isAxiosError<AxiosError<{ message: string }>>(e)) {
-                handleServerNetworkError(e, dispatch);
-            }
+        } catch (error) {
+            const err = error as Error | AxiosError;
+            return handleAsyncServerNetworkError(err, thunkAPI);
         }
     }
 )
 
-const slice = createSlice({
+export const slice = createSlice({
     name: 'app',
     initialState: {
         status: 'idle' as RequestStatusType,
@@ -47,14 +48,11 @@ const slice = createSlice({
     }
 })
 
-export const appReducer = slice.reducer;
-
 // actions
 
-export const appSlice = slice.actions;
+const { setAppStatusAC } = slice.actions
 
 export const asyncAppActions = {initializeAppTC}
-
 
 //Types
 

@@ -1,11 +1,7 @@
-import {
-    appReducer,
-    initializeAppTC,
-    InitialStateType,
-} from "./app-reducer";
-import {appActions} from "./index";
+import {appActions, applicationReducer} from "./index";
+import {InitialStateType} from "./application-reducer";
 
-
+const { setAppStatusAC, setAppErrorAC, initializeAppTC } = appActions;
 let startState: InitialStateType
 
 
@@ -19,7 +15,7 @@ beforeEach(() => {
 
 test('app should be changed its status', () => {
 
-    const endState = appReducer(startState, appActions.setAppStatusAC({status: "loading"}))
+    const endState = applicationReducer(startState, setAppStatusAC({status: "loading"}))
 
     expect(endState.status).toBe("loading");
 
@@ -27,7 +23,7 @@ test('app should be changed its status', () => {
 
 test('app should be changed its error message', () => {
 
-    const endState = appReducer(startState, appActions.setAppErrorAC({error: "Some error"}))
+    const endState = applicationReducer(startState, setAppErrorAC({error: "Some error"}))
 
     expect(endState.error).toBe("Some error");
     expect(endState.status).toBe("idle");
@@ -36,7 +32,7 @@ test('app should be changed its error message', () => {
 
 test('app should be changed its Initialized status', () => {
 
-    const endState = appReducer(startState, initializeAppTC.fulfilled( undefined, 'requestId', undefined))
+    const endState = applicationReducer(startState, initializeAppTC.fulfilled( undefined, 'requestId', undefined))
 
     expect(endState.isInitialized).toBe(true);
     expect(endState.status).toBe("idle");

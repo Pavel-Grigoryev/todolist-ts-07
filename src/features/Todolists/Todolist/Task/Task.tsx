@@ -4,7 +4,7 @@ import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import {TaskDomainType} from "features/Todolists/tasks-reducer";
-import {TasksStatuses} from "api/todolist-api";
+import {TasksStatuses} from "api/types";
 import {EditableSpan} from "components/EditableSpan";
 import {useActions} from "hooks/useActions";
 import {tasksActions} from "../../index";

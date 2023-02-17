@@ -8,7 +8,7 @@ import Toolbar from '@mui/material/Toolbar';
 import {Menu} from "@mui/icons-material";
 import {Todolists} from "features/Todolists";
 import LinearProgress from "@mui/material/LinearProgress";
-import {asyncAppActions} from "./app-reducer";
+import {asyncAppActions} from "../features/Application/application-reducer";
 import Container from "@mui/material/Container";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "features/Auth/Login";
@@ -18,7 +18,7 @@ import {ErrorSnackbar} from "components/ErrorSnackbar";
 import {useActions} from "hooks/useActions";
 import {useAppSelector} from "hooks/useAppSelector";
 import {authSelectors} from "features/Auth";
-import {selectIsInitialized, selectStatus} from "./app-selectors";
+import {selectIsInitialized, selectStatus} from "../features/Application/application-selectors";
 
 
 export function App({demo = false}: AppPropsType) {

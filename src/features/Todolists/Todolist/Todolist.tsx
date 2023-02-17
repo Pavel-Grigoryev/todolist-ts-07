@@ -8,7 +8,7 @@ import List from "@mui/material/List";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import {Task} from "./Task/Task";
 import {FilterValuesType, TodoListDomainType} from "../todolist-reducer";
-import {TasksStatuses} from "api/todolist-api";
+import {TasksStatuses} from "api/types";
 import {TasksStateType} from "../tasks-reducer";
 import {useActions} from "hooks/useActions";
 import {useAppSelector} from "hooks/useAppSelector";

@@ -6,7 +6,7 @@ import {
     TodoListDomainType,
     updateTodolistTC
 } from "./todolist-reducer";
-import {RequestStatusType} from "app/app-reducer";
+import {RequestStatusType} from "features/Application/application-reducer";
 import {logoutTC} from "../Auth/auth-reducer";
 import {todolistActions, todolistReducer} from "./index";
 
