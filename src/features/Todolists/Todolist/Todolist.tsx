@@ -42,7 +42,6 @@ export const Todolist = memo(({todolist}: PropsType) => {
             helpers.setError(null);
             helpers.setTitle('');
         }
-
     }, [id])
 
     const removeTodolist = useCallback(() => {

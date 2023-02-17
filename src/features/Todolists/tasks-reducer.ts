@@ -1,12 +1,14 @@
 import {addTodolistTC, deleteTodolistTC, getTodolistsTC, RESULT_CODE} from "./todolist-reducer";
-import {FieldErrorType, TaskPayloadType, TaskType, todolistAPI} from "api/todolist-api";
-import {AppRootStateType} from "app/store";
+import {TaskPayloadType, TaskType, todolistAPI} from "api/todolist-api";
+import {AppRootStateType, ThunkErrorType} from "app/store";
 import {RequestStatusType} from "app/app-reducer";
-import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
+import {handleAsyncServerAppError, handleAsyncServerNetworkError, handleServerNetworkError} from "utils/error-utils";
 import axios, {AxiosError} from "axios";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {logoutTC} from "../Auth/auth-reducer";
 import {appActions} from "app";
+
+const {setAppStatusAC} = appActions;
 
 //Thunks
 
@@ -14,10 +16,10 @@ export const setTasksTC = createAsyncThunk('tasks/setTasksTC', async (todolistId
     dispatch,
     rejectWithValue
 }) => {
-    dispatch(appActions.setAppStatusAC({status: "loading"}));
+    dispatch(setAppStatusAC({status: "loading"}));
     try {
         const res = await todolistAPI.getTasks(todolistId);
-        dispatch(appActions.setAppStatusAC({status: "succeeded"}));
+        dispatch(setAppStatusAC({status: "succeeded"}));
         return {todolistId, tasks: res.data.items}
     } catch (e) {
         if (axios.isAxiosError<AxiosError<{ message: string }>>(e)) {
@@ -27,41 +29,37 @@ export const setTasksTC = createAsyncThunk('tasks/setTasksTC', async (todolistId
     }
 })
 
-export const addTaskTC = createAsyncThunk <any, {todolistId: string, title: string}, { rejectValue: { errors: Array<string>, fieldsErrors?: Array<FieldErrorType> } }>('tasks/addTaskTC', async (param, {dispatch, rejectWithValue}) =>
-{
-    dispatch(appActions.setAppStatusAC({status: "loading"}));
-    try {
-        const res = await todolistAPI.addTask(param.todolistId, param.title)
-        if (res.data.resultCode === RESULT_CODE.SUCCESS) {
-            dispatch(appActions.setAppStatusAC({status: "succeeded"}));
-            return {task: res.data.data.item}
-        } else {
-            handleServerAppError(res.data, dispatch, false);
-            return rejectWithValue({errors: res.data.messages, fieldsErrors: res.data.fieldsErrors})
-        }
-    } catch (e) {
-        if (axios.isAxiosError<AxiosError<{ message: string }>>(e)) {
-            handleServerNetworkError(e, dispatch, false);
-            return rejectWithValue({errors: [e.message], fieldsErrors: undefined});
+export const addTaskTC = createAsyncThunk<{ task: TaskType }, { todolistId: string, title: string }, ThunkErrorType>('tasks/addTaskTC', async (param, thunkAPI) => {
+        thunkAPI.dispatch(setAppStatusAC({status: "loading"}));
+        try {
+            const res = await todolistAPI.addTask(param.todolistId, param.title)
+            if (res.data.resultCode === RESULT_CODE.SUCCESS) {
+                thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}));
+                return {task: res.data.data.item}
+            } else {
+                handleAsyncServerAppError(res.data, thunkAPI, false);
+                return thunkAPI.rejectWithValue({errors: res.data.messages, fieldsErrors: res.data.fieldsErrors});
+            }
+        } catch (error) {
+            const err = error as Error | AxiosError;
+            return handleAsyncServerNetworkError(err, thunkAPI);
         }
     }
-}
 )
 
 export const deleteTaskTC = createAsyncThunk('tasks/deleteTaskTC', (param: { todolistId: string, taskId: string }, {
     dispatch,
     rejectWithValue
 }) => {
-    dispatch(appActions.setAppStatusAC({status: "loading"}));
-    dispatch(tasksSlice.updateTaskAC({
+    dispatch(setAppStatusAC({status: "loading"}));
+    dispatch(updateTaskAC({
         todolistId: param.todolistId, taskId: param.taskId, model: {
             entityStatus: "loading"
         }
     }));
     try {
-
         const res = todolistAPI.deleteTask(param.todolistId, param.taskId);
-        dispatch(appActions.setAppStatusAC({status: "succeeded"}));
+        dispatch(setAppStatusAC({status: "succeeded"}));
         return {taskId: param.taskId, todolistId: param.todolistId}
     } catch (e) {
         if (axios.isAxiosError<AxiosError<{ message: string }>>(e)) {
@@ -69,7 +67,7 @@ export const deleteTaskTC = createAsyncThunk('tasks/deleteTaskTC', (param: { tod
         }
         return rejectWithValue(null);
     } finally {
-        dispatch(tasksSlice.updateTaskAC({
+        dispatch(updateTaskAC({
             todolistId: param.todolistId, taskId: param.taskId, model: {
                 entityStatus: "failed"
             }
@@ -82,13 +80,13 @@ export const updateTaskTC = createAsyncThunk('tasks/updateTaskTC', async (param:
     rejectWithValue,
     getState
 }) => {
-    dispatch(tasksSlice.updateTaskAC({
+    dispatch(updateTaskAC({
         todolistId: param.todolistId, taskId: param.taskId, model:
             {
                 entityStatus: "loading"
             }
     }));
-    dispatch(appActions.setAppStatusAC({status: "loading"}));
+    dispatch(setAppStatusAC({status: "loading"}));
     try {
         const state = getState() as AppRootStateType
         const task = state.tasks[param.todolistId].find(t => t.id === param.taskId);
@@ -106,7 +104,7 @@ export const updateTaskTC = createAsyncThunk('tasks/updateTaskTC', async (param:
                 ...param.model
             }
             const res = await todolistAPI.updateTask(param.todolistId, param.taskId, newModel);
-            dispatch(appActions.setAppStatusAC({status: "succeeded"}));
+            dispatch(setAppStatusAC({status: "succeeded"}));
 
             return param
         }
@@ -117,7 +115,7 @@ export const updateTaskTC = createAsyncThunk('tasks/updateTaskTC', async (param:
         }
         return rejectWithValue(null);
     } finally {
-        dispatch(tasksSlice.updateTaskAC({
+        dispatch(updateTaskAC({
             todolistId: param.todolistId, taskId: param.taskId, model:
                 {
                     entityStatus: "failed"
@@ -175,12 +173,10 @@ export const slice = createSlice({
         });
     }
 })
-export const tasksReducer = slice.reducer
 
 //Actions
 
-export const tasksSlice = slice.actions
-
+const {updateTaskAC} = slice.actions
 
 export const asyncTasksActions = {addTaskTC, deleteTaskTC, updateTaskTC}
 

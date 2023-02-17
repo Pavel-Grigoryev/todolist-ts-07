@@ -1,11 +1,12 @@
 import {AnyAction, combineReducers} from "redux";
 import thunkMiddleware, {ThunkAction, ThunkDispatch} from "redux-thunk";
-import {todolistReducer} from "features/Todolists/todolist-reducer";
-import {tasksReducer} from "features/Todolists/tasks-reducer";
+import {todolistReducer} from "features/Todolists";
+import {tasksReducer} from "features/Todolists";
 import {appReducer} from "./app-reducer";
-import {authReducer} from "features/Auth/auth-reducer";
+import {authReducer} from "features/Auth";
 import {configureStore} from "@reduxjs/toolkit";
 import logger from 'redux-logger'
+import {FieldErrorType} from "../api/todolist-api";
 
 
 const rootReducer = combineReducers({
@@ -29,6 +30,10 @@ export type AppRootStateType = ReturnType<RootReducerType>
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AnyAction>
 
 export type AppDispatchType = ThunkDispatch<AppRootStateType, unknown, AnyAction>
+
+export type ThunkErrorType = {
+    rejectValue: { errors: Array<string>, fieldsErrors?: Array<FieldErrorType> }
+}
 
 //@ts-ignore
 window.store = store;
