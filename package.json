@@ -1,5 +1,6 @@
 {
   "name": "it-incubator-todolist-ts",
+  "homepage": "https://Pavel-Grigoryev.github.io/TodoListApp",
   "jest": {
     "transformIgnorePatterns": [
       "node_modules/(?!axios)/"
@@ -25,6 +26,7 @@
     "@types/uuid": "^9.0.0",
     "axios": "^1.2.2",
     "formik": "^2.2.9",
+    "gh-pages": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
@@ -45,7 +47,9 @@
     "storybook": "start-storybook -p 9009 -s public --no-dll ",
     "build-storybook": "build-storybook -s public",
     "jest:integration": "jest -c integration/jest.config.js",
-    "test:integration": "start-server-and-test storybook http-get://localhost:9009 jest:integration"
+    "test:integration": "start-server-and-test storybook http-get://localhost:9009 jest:integration",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app",

@@ -2,11 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {Provider} from "react-redux";
 import {App} from "./app/App";
 import {store} from "./app/store";
-import { BrowserRouter } from "react-router-dom";
+import {HashRouter} from "react-router-dom";
 
 
 const theme = createTheme({
@@ -24,12 +24,12 @@ const theme = createTheme({
 ReactDOM.render(
     <ThemeProvider theme={theme}>
         <Provider store={store}>
-            <BrowserRouter>
+            <HashRouter>
                 <App/>
-            </BrowserRouter>
+            </HashRouter>
         </Provider>
     </ThemeProvider>
-    ,document.getElementById('root'));
+    , document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
