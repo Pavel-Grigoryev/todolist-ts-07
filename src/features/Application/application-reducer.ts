@@ -10,7 +10,7 @@ const {setIsLoggedInAC} = authCommonActions;
 //Thunks
 
 export const initializeAppTC = createAsyncThunk('app/initializeAppTC', async (param, thunkAPI) => {
-    thunkAPI.dispatch(setAppStatusAC({status: 'loading'}));
+        thunkAPI.dispatch(setAppStatusAC({status: 'loading'}));
         try {
             const res = await authAPI.me();
             if (res.data.resultCode === RESULT_CODE.SUCCESS) {
@@ -44,13 +44,15 @@ export const slice = createSlice({
     extraReducers: builder => {
         builder.addCase(initializeAppTC.fulfilled, (state) => {
             state.isInitialized = true
+        }).addCase(initializeAppTC.rejected, (state) => {
+            state.isInitialized = true
         })
     }
 })
 
 // actions
 
-const { setAppStatusAC } = slice.actions
+const {setAppStatusAC} = slice.actions
 
 export const asyncAppActions = {initializeAppTC}
 
