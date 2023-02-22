@@ -54,14 +54,14 @@ export function App({demo = false}: AppPropsType) {
         <div className="App">
             <ErrorSnackbar/>
             <AppBar position="fixed">
-                <Toolbar style={{justifyContent: "center"}}>
+                <Toolbar style={{justifyContent: "center", position: "relative"}}>
                    {/* <IconButton edge="start" color="inherit" aria-label="menu" sx={{marginRight: 'auto'}}>
                         <Menu/>
                     </IconButton>*/}
                     <div className={s.logoImgBlock}>
                         <img src={logoImg} alt="logo"/>
                     </div>
-                    {isLoggedIn && <Button color="inherit" variant={"outlined"} onClick={logoutHandler}>Logout</Button>}
+                    {isLoggedIn && <Button color="inherit" variant={"outlined"} onClick={logoutHandler} sx={{position: "absolute", right: "24px", top: "50%", transform: "translateY(-50%)"}}>Logout</Button>}
                 </Toolbar>
                 {status === "loading" && <LinearProgress color={"secondary"} style={{
                     position: "absolute",
