@@ -1,15 +1,16 @@
 import {authAPI} from "api/todolist-api";
 import {RESULT_CODE} from "../Todolists/todolist-reducer";
 import {AxiosError} from "axios";
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "utils/error-utils";
 import {authCommonActions} from "../CommonActions/Auth";
+import {createAppAsyncThunk} from "../../utils/create-app-async-thunk";
 
 const {setIsLoggedInAC} = authCommonActions;
 
 //Thunks
 
-export const initializeAppTC = createAsyncThunk('app/initializeAppTC', async (param, thunkAPI) => {
+export const initializeAppTC = createAppAsyncThunk('app/initializeAppTC', async (param, thunkAPI) => {
         thunkAPI.dispatch(setAppStatusAC({status: 'loading'}));
         try {
             const res = await authAPI.me();

@@ -3,18 +3,18 @@ import {RequestStatusType} from "features/Application/application-reducer";
 import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "utils/error-utils";
 import {AxiosError} from "axios";
 import {setTasksTC} from "./tasks-reducer";
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {logoutTC} from "../Auth/auth-reducer";
 import {appActions} from "features/Application";
-import {ThunkErrorType} from "utils/types";
 import {TodoListType} from "api/types";
+import {createAppAsyncThunk} from "../../utils/create-app-async-thunk";
 
 
 const {setAppStatusAC} = appActions;
 
 //Thunks
 
-export const getTodolistsTC = createAsyncThunk<Array<TodoListType>, undefined, ThunkErrorType>('todolists/getTodolistsTC', async (param, thunkAPI) => {
+export const getTodolistsTC = createAppAsyncThunk<Array<TodoListType>, undefined>('todolists/getTodolistsTC', async (param, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({status: "loading"}));
     try {
         const res = await todolistAPI.getTodolist()
@@ -33,7 +33,7 @@ export const getTodolistsTC = createAsyncThunk<Array<TodoListType>, undefined, T
     }
 })
 
-export const deleteTodolistTC = createAsyncThunk<{ todolistId: string }, string, ThunkErrorType>('todolists/deleteTodolistTC', async (id: string, thunkAPI) => {
+export const deleteTodolistTC = createAppAsyncThunk<{ todolistId: string }, string>('todolists/deleteTodolistTC', async (id: string, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({status: "loading"}));
     thunkAPI.dispatch(changeTodolistEntityStatusAC({id, entityStatus: "loading"}));
     try {
@@ -53,7 +53,7 @@ export const deleteTodolistTC = createAsyncThunk<{ todolistId: string }, string,
     }
 })
 
-export const addTodolistTC = createAsyncThunk<{ todolist: TodoListType }, string, ThunkErrorType>('todolists/addTodolistTC', async (title: string, thunkAPI) => {
+export const addTodolistTC = createAppAsyncThunk<{ todolist: TodoListType }, string>('todolists/addTodolistTC', async (title: string, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({status: "loading"}));
     try {
         const res = await todolistAPI.addTodolist(title)
@@ -69,7 +69,7 @@ export const addTodolistTC = createAsyncThunk<{ todolist: TodoListType }, string
     }
 })
 
-export const updateTodolistTC = createAsyncThunk<{ title: string, id: string }, { id: string, title: string }, ThunkErrorType>('todolists/updateTodolistTC', async (param, thunkAPI) => {
+export const updateTodolistTC = createAppAsyncThunk<{ title: string, id: string }, { id: string, title: string }>('todolists/updateTodolistTC', async (param, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({status: "loading"}));
     thunkAPI.dispatch(changeTodolistEntityStatusAC({id: param.id, entityStatus: "loading"}));
     try {

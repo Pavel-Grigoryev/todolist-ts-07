@@ -2,17 +2,17 @@ import {authAPI} from "api/todolist-api";
 import {RESULT_CODE} from "../Todolists/todolist-reducer";
 import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "utils/error-utils";
 import {AxiosError} from "axios";
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 import {appActions} from "features/Application";
-import {ThunkErrorType} from "utils/types";
 import {AuthDataType} from "api/types";
 import {authCommonActions} from "../CommonActions/Auth";
+import {createAppAsyncThunk} from "../../utils/create-app-async-thunk";
 
 const {setAppStatusAC} = appActions;
 
 // thunks
 
-export const loginTC = createAsyncThunk<undefined, AuthDataType, ThunkErrorType>('auth/loginTC', async (param, thunkAPI) => {
+export const loginTC = createAppAsyncThunk<undefined, AuthDataType>('auth/loginTC', async (param, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({status: 'loading'}));
     try {
         const res = await authAPI.login(param);
@@ -27,7 +27,7 @@ export const loginTC = createAsyncThunk<undefined, AuthDataType, ThunkErrorType>
     }
 });
 
-export const logoutTC = createAsyncThunk('auth/logoutTC', async (param, thunkAPI) => {
+export const logoutTC = createAppAsyncThunk('auth/logoutTC', async (param, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({status: 'loading'}));
     try {
         const res = await authAPI.logout()

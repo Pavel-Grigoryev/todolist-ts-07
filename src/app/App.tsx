@@ -2,9 +2,7 @@ import React, {useEffect} from 'react';
 import s from './App.module.css';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
-import {Menu} from "@mui/icons-material";
 import {Todolists} from "features/Todolists";
 import LinearProgress from "@mui/material/LinearProgress";
 import {asyncAppActions} from "features/Application/application-reducer";
@@ -12,11 +10,10 @@ import Container from "@mui/material/Container";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "features/Auth/Login";
 import CircularProgress from "@mui/material/CircularProgress";
-import {asyncAuthActions} from "features/Auth/auth-reducer";
 import {ErrorSnackbar} from "components/ErrorSnackbar";
 import {useActions} from "hooks/useActions";
 import {useAppSelector} from "hooks/useAppSelector";
-import {authSelectors} from "features/Auth";
+import {authActions, authSelectors} from "features/Auth";
 import {selectIsInitialized, selectStatus} from "../features/Application/application-selectors";
 import logoImg from 'assets/images/TaskSpot_logo.png'
 
@@ -27,7 +24,7 @@ export function App({demo = false}: AppPropsType) {
     const isLoggedIn = useAppSelector(authSelectors.selectIsLoggedIn);
 
     const {initializeAppTC} = useActions(asyncAppActions);
-    const {logoutTC} = useActions(asyncAuthActions);
+    const {logoutTC} = useActions(authActions);
 
     useEffect(() => {
         if (demo || isLoggedIn) {
