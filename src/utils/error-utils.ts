@@ -14,7 +14,7 @@ export const handleAsyncServerAppError = <T>(data: CommonResponseType<T>, thunkA
     return thunkAPI.rejectWithValue({errors: data.messages, fieldsErrors: data.fieldsErrors});
 }
 
-export const handleAsyncServerNetworkError = (err: Error | AxiosError, thunkAPI: ThunkAPIType, showError = true) => {
+export const  handleAsyncServerNetworkError = (err: Error | AxiosError, thunkAPI: ThunkAPIType, showError = true) => {
     if (axios.isAxiosError<AxiosError<{ message: string }>>(err)) {
         if (showError) {
             const error = err.response?.data ? err.response.data.message : err.message;
