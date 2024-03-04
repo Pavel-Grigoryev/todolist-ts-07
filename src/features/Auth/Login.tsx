@@ -30,7 +30,7 @@ export const Login = () => {
         },
         validationSchema: Yup.object({
             email: Yup.string().required('Required').email('Invalid email address'),
-            password: Yup.string().required('Required').min(5, 'Must be 5 characters or more')
+            password: Yup.string().required('Required').min(4, 'Must be 4 characters or more')
         }),
         onSubmit: async (values, formikHelpers) => {
             const resultAction = await dispatch(authActions.loginTC(values));
